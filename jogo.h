@@ -16,13 +16,24 @@ typedef struct{
     double tempo;
 }Jogo;
 
+typedef struct{
+    Rectangle quadrado;
+    Color cor;
+    bool existe;
+}Fruta;
+
 
 void IniciaBordas(Jogo* jogo);
 void IniciaJogo(Jogo* jogo);
 void DesenhaJogo(Jogo* jogo);
 void DesenhaBordas(Jogo* jogo);
-int AtualizaRodada(Jogo* jogo);
+int AtualizaRodada(Jogo* jogo, float* tempo_s, Fruta* fruta);
+void MostraTempo(Jogo* jogo, float* tempo_s);
 
 void LiberaEspaco(Jogo* jogo);
+
+//funções frutinha
+void DesenhaFrutinha(Jogo* jogo, Fruta* fruta);
+void IniciaFruta(Fruta* fruta);
 
 #endif
