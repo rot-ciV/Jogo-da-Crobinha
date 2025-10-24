@@ -7,6 +7,7 @@
 #include <time.h>
 
 
+
 void IniciaBordas(Jogo *jogo){
     //Borda de cima
     jogo->borda[0] = (Rectangle) {0, 0, LARGURA, 10};
@@ -37,13 +38,14 @@ void DesenhaBordas(Jogo* jogo){
 }
 
 void DesenhaJogo(Jogo* jogo){
-
+    MostraTempo(jogo);
     DesenhaBordas(jogo);
     DesenhaCobra(&jogo->cobra);
+    MostraTempo(jogo);
     DesenhaFrutinha(&jogo->frutinha, &jogo->cobra);
 }
 
-int AtualizaRodada(Jogo* jogo, float* tempo_s){
+int AtualizaRodada(Jogo* jogo){
     
     AtualizaDirecao(&jogo->cobra);
     
@@ -52,11 +54,10 @@ int AtualizaRodada(Jogo* jogo, float* tempo_s){
         jogo->tempo = GetTime();
         AtualizaPosCobra(&jogo->cobra);
         jogo->cobra.cooldown = 0.2;
-        *tempo_s += 0.2;
+        jogo->sessao += 0.2;
         CobraGulosa(jogo);
     }
     
-    MostraTempo(jogo, tempo_s);
     return MataCobra(&jogo->cobra, jogo->borda);
 }
 
@@ -66,10 +67,11 @@ void LiberaEspaco(Jogo* jogo){
     LiberaEspacoCobra(&jogo->cobra);
 }
 
-void MostraTempo(Jogo* jogo, float* tempo_s){
+void MostraTempo(Jogo* jogo){
     int minutos, segundos;
-    minutos = *tempo_s/60;
-    segundos = (int)*tempo_s%60;
+    minutos = jogo->sessao/60;
+    segundos = (int)(jogo->sessao)%60;
+    DrawRectangle(485, 45, 75, 35, (Color){0,0,0,150});
     DrawText(TextFormat("%d:%02d", minutos, segundos), 500, 50, 30, RAYWHITE);
 }
 
@@ -78,6 +80,14 @@ void CobraGulosa(Jogo* jogo){
     if(CheckCollisionRecs(jogo->cobra.Cabeca->posicao, jogo->frutinha.posicao)){
         
         AumentaCobra(&jogo->cobra);
+        jogo->frutinha.pontuacao++;
         jogo->frutinha.existe = false;
     }
+}
+
+void FimdeJogotxt(Jogo* jogo){
+    DrawText("Você Perdeu!", 225, 200, 40, WHITE);
+    DrawText(TextFormat("Tempo da partida anterior: %d:%02d", (int)jogo->sessao/60, (int)jogo->sessao%60), 225, 300, 20, WHITE);
+    DrawText(TextFormat("Pontuação: %d", jogo->frutinha.pontuacao), 225, 350, 20, WHITE);
+    DrawText("Pressione ENTER para tentar novamente.", 150, 400, 20, WHITE); 
 }

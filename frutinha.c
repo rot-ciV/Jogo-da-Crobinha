@@ -9,6 +9,7 @@ void IniciaFrutinha(Fruta* fruta){
     fruta->existe = false;
     fruta->posicao.height = STD_SIZE_Y;
     fruta->posicao.width = STD_SIZE_X;
+    fruta->pontuacao = 0;
 }
 
 void DesenhaFrutinha(Fruta* fruta, ListaCobra* Cobra){
@@ -26,8 +27,8 @@ void DesenhaFrutinha(Fruta* fruta, ListaCobra* Cobra){
 void AtualizaPosFrutinha(Fruta* frutinha, ListaCobra* Cobra){
 
     TipoApontador testadouro = Cobra->Cabeca;
-    frutinha->posicao.x = 10+STD_SIZE_X*(rand()%((LARGURA-10)/STD_SIZE_X));
-    frutinha->posicao.y = 10+STD_SIZE_Y*(rand()%((ALTURA-10)/STD_SIZE_Y));
+    frutinha->posicao.x = 10+STD_SIZE_X*((int)rand()%((LARGURA/STD_SIZE_X)-1));
+    frutinha->posicao.y = 10+STD_SIZE_Y*((int)rand()%((ALTURA/STD_SIZE_Y)-1));
     frutinha->existe = true;
 
     while(testadouro != NULL){

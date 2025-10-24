@@ -1,7 +1,7 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
-#define SNAKE_COLOR GREEN
+#define SNAKE_COLOR YELLOW
 
 
 typedef struct corpo{
