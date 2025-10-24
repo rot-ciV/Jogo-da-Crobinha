@@ -11,13 +11,35 @@ void IniciaFrutinha(Fruta* fruta){
     fruta->posicao.width = STD_SIZE_X;
 }
 
-void DesenhaFrutinha(Fruta* fruta){
+void DesenhaFrutinha(Fruta* fruta, ListaCobra* Cobra){
     if(fruta->existe == false){
-        fruta->posicao.x = 10+20*(rand()%30);
-        fruta->posicao.y = 10+20*(rand()%30);
-        fruta->existe = true;
-        DrawRectangleRec(fruta->posicao, fruta->cor);        
+
+        AtualizaPosFrutinha(fruta, Cobra);
+        DrawRectangleRec(fruta->posicao, fruta->cor);
+
     }else if(fruta->existe == true){
+
         DrawRectangleRec(fruta->posicao, fruta->cor);
     }
+}
+
+void AtualizaPosFrutinha(Fruta* frutinha, ListaCobra* Cobra){
+
+    TipoApontador testadouro = Cobra->Cabeca;
+    frutinha->posicao.x = 10+20*(rand()%30);
+    frutinha->posicao.y = 10+20*(rand()%30);
+    frutinha->existe = true;
+
+    while(testadouro != NULL){
+
+        if(CheckCollisionRecs(testadouro->posicao, frutinha->posicao)){
+
+            frutinha->posicao.x = 10+20*(rand()%30);
+            frutinha->posicao.y = 10+20*(rand()%30);
+            testadouro = Cobra->Cabeca;
+            continue;
+        }
+
+        testadouro = testadouro->Prox;
+    } 
 }

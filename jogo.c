@@ -40,13 +40,12 @@ void DesenhaJogo(Jogo* jogo){
 
     DesenhaBordas(jogo);
     DesenhaCobra(&jogo->cobra);
-    DesenhaFrutinha(&jogo->frutinha);
+    DesenhaFrutinha(&jogo->frutinha, &jogo->cobra);
 }
 
 int AtualizaRodada(Jogo* jogo, float* tempo_s){
     
     AtualizaDirecao(&jogo->cobra);
-    DesenhaFrutinha(&jogo->frutinha);
     
     if(GetTime() - jogo->tempo >= 0.2){
         

@@ -8,7 +8,6 @@
 int main(){
 
     Jogo jogo;
-    Fruta fruta;
 
     int gameOver = 0;
     float tempo_s = 0;
