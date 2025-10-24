@@ -26,8 +26,8 @@ void DesenhaFrutinha(Fruta* fruta, ListaCobra* Cobra){
 void AtualizaPosFrutinha(Fruta* frutinha, ListaCobra* Cobra){
 
     TipoApontador testadouro = Cobra->Cabeca;
-    frutinha->posicao.x = 10+20*(rand()%30);
-    frutinha->posicao.y = 10+20*(rand()%30);
+    frutinha->posicao.x = 10+STD_SIZE_X*(rand()%((LARGURA-10)/STD_SIZE_X));
+    frutinha->posicao.y = 10+STD_SIZE_Y*(rand()%((ALTURA-10)/STD_SIZE_Y));
     frutinha->existe = true;
 
     while(testadouro != NULL){

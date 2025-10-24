@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "raylib.h"
 #include "jogo.h"
 #include "snake.h"
@@ -11,6 +12,7 @@ int main(){
 
     int gameOver = 0;
     float tempo_s = 0;
+    srand(time(NULL));
 
     InitWindow(LARGURA, ALTURA, "Snake Game");
     SetTargetFPS(30);

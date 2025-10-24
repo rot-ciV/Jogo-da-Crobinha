@@ -3,8 +3,8 @@
 
 #define LARGURA 660
 #define ALTURA 660
-#define STD_SIZE_X 20
-#define STD_SIZE_Y 20
+#define STD_SIZE_X 50
+#define STD_SIZE_Y 50
 
 #include "snake.h"
 #include "frutinha.h"
