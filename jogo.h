@@ -7,33 +7,28 @@
 #define STD_SIZE_Y 20
 
 #include "snake.h"
-
+#include "frutinha.h"
 
 typedef struct{
 
     Rectangle borda[4];
     ListaCobra cobra;
+    Fruta frutinha;
     double tempo;
 }Jogo;
-
-typedef struct{
-    Rectangle quadrado;
-    Color cor;
-    bool existe;
-}Fruta;
 
 
 void IniciaBordas(Jogo* jogo);
 void IniciaJogo(Jogo* jogo);
 void DesenhaJogo(Jogo* jogo);
 void DesenhaBordas(Jogo* jogo);
-int AtualizaRodada(Jogo* jogo, float* tempo_s, Fruta* fruta);
+int AtualizaRodada(Jogo* jogo, float* tempo_s);
+void CobraGulosa(Jogo* jogo);
 void MostraTempo(Jogo* jogo, float* tempo_s);
 
 void LiberaEspaco(Jogo* jogo);
 
 //funções frutinha
-void DesenhaFrutinha(Jogo* jogo, Fruta* fruta);
-void IniciaFruta(Fruta* fruta);
+
 
 #endif

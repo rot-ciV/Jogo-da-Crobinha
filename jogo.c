@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include "jogo.h"
 #include "snake.h"
+#include "frutinha.h"
 #include <time.h>
 
 
@@ -22,6 +23,7 @@ void IniciaJogo(Jogo *jogo){
     
     IniciaBordas(jogo);
     IniciaCobra(&jogo->cobra);
+    IniciaFrutinha(&jogo->frutinha);
 
     jogo->tempo = GetTime();
     jogo->cobra.cooldown = 0.2;
@@ -38,12 +40,13 @@ void DesenhaJogo(Jogo* jogo){
 
     DesenhaBordas(jogo);
     DesenhaCobra(&jogo->cobra);
+    DesenhaFrutinha(&jogo->frutinha);
 }
 
-int AtualizaRodada(Jogo* jogo, float* tempo_s, Fruta* fruta){
+int AtualizaRodada(Jogo* jogo, float* tempo_s){
     
     AtualizaDirecao(&jogo->cobra);
-    DesenhaFrutinha(jogo, fruta);
+    DesenhaFrutinha(&jogo->frutinha);
     
     if(GetTime() - jogo->tempo >= 0.2){
         
@@ -51,6 +54,7 @@ int AtualizaRodada(Jogo* jogo, float* tempo_s, Fruta* fruta){
         AtualizaPosCobra(&jogo->cobra);
         jogo->cobra.cooldown = 0.2;
         *tempo_s += 0.2;
+        CobraGulosa(jogo);
     }
     
     MostraTempo(jogo, tempo_s);
@@ -70,25 +74,11 @@ void MostraTempo(Jogo* jogo, float* tempo_s){
     DrawText(TextFormat("%d:%02d", minutos, segundos), 500, 50, 30, RAYWHITE);
 }
 
-//Funções referentes à Frutinha
-void IniciaFruta(Fruta* fruta){
-    fruta->cor = RED;
-    fruta->existe = false;
-    fruta->quadrado.height = 20;
-    fruta->quadrado.width = 20;
-}
+void CobraGulosa(Jogo* jogo){
 
-void DesenhaFrutinha(Jogo* jogo, Fruta* fruta){
-    if(fruta->existe == false){
-        fruta->quadrado.x = 10+20*(rand()%30);
-        fruta->quadrado.y = 10+20*(rand()%30);
-        fruta->existe = true;
-        DrawRectangleRec(fruta->quadrado, fruta->cor);        
-    }else if(fruta->existe == true){
-        DrawRectangleRec(fruta->quadrado, fruta->cor);
-        if(CheckCollisionRecs(jogo->cobra.Cabeca->posicao, fruta->quadrado)){
-            fruta->existe = false;
-        };
-
+    if(CheckCollisionRecs(jogo->cobra.Cabeca->posicao, jogo->frutinha.posicao)){
+        
+        AumentaCobra(&jogo->cobra);
+        jogo->frutinha.existe = false;
     }
 }

@@ -108,19 +108,15 @@ void DesenhaCobra(ListaCobra* Cobra){
     }
 }
 
+void AumentaCobra(ListaCobra* Cobra){
 
-void LiberaEspacoCobra(ListaCobra* Cobra){
-
-    TipoApontador Liberador;
-    TipoApontador Aux = Cobra->Cabeca;
-    while(Aux != NULL){
-
-        Liberador = Aux;
-        Aux = Aux->Prox;
-        free(Liberador);
-    }
-
-    FLVCobra(Cobra);
+    Cobra->Rabo->Prox = malloc(sizeof(Corpo));
+    Cobra->Rabo->Prox->posicao = Cobra->Rabo->posicao; 
+    Cobra->Rabo->Prox->Ant = Cobra->Rabo;
+    Cobra->Rabo->Prox->cor = SNAKE_COLOR;
+    Cobra->Rabo = Cobra->Rabo->Prox;
+    Cobra->Rabo->Prox = NULL;
+    Cobra->tamanho++;
 }
 
 int MataCobra(ListaCobra* Cobra, Rectangle borda[4]){
@@ -143,4 +139,19 @@ int MataCobra(ListaCobra* Cobra, Rectangle borda[4]){
     }
 
     return 0;
+}
+
+
+void LiberaEspacoCobra(ListaCobra* Cobra){
+
+    TipoApontador Liberador;
+    TipoApontador Aux = Cobra->Cabeca;
+    while(Aux != NULL){
+
+        Liberador = Aux;
+        Aux = Aux->Prox;
+        free(Liberador);
+    }
+
+    FLVCobra(Cobra);
 }

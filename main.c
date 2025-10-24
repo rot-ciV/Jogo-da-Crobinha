@@ -9,7 +9,7 @@ int main(){
 
     Jogo jogo;
     Fruta fruta;
-    IniciaFruta(&fruta);
+
     int gameOver = 0;
     float tempo_s = 0;
 
@@ -24,7 +24,7 @@ int main(){
 
         if(!gameOver){
             
-            gameOver = AtualizaRodada(&jogo, &tempo_s, &fruta);
+            gameOver = AtualizaRodada(&jogo, &tempo_s);
             DesenhaJogo(&jogo);
         }else{
 
