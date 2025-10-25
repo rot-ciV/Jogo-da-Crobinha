@@ -11,7 +11,6 @@ int main(){
     Jogo jogo;
 
     int gameOver = 0;
-    float tempo_s = 0;
     srand(time(NULL));
 
     InitWindow(LARGURA, ALTURA, "Snake Game");
@@ -25,18 +24,16 @@ int main(){
 
         if(!gameOver){
             
-            gameOver = AtualizaRodada(&jogo, &tempo_s);
+            gameOver = AtualizaRodada(&jogo);
             DesenhaJogo(&jogo);
         }else{
 
-            DrawText("Você Perdeu!", 225, 200, 40, WHITE);
-            DrawText(TextFormat("Tempo da partida anterior: %d:%02d", (int)tempo_s/60, (int)tempo_s%60), 225, 300, 20, WHITE);
-            DrawText("Pressione ENTER para tentar novamente.", 150, 400, 20, WHITE); 
-
+            FimdeJogotxt(&jogo);
+            
             if(IsKeyPressed(KEY_ENTER)){
                 IniciaJogo(&jogo);
                 gameOver = 0;
-                tempo_s = 0;
+                jogo.sessao = 0;
             }
         }
 

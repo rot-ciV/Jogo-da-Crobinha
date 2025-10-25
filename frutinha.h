@@ -7,6 +7,7 @@ typedef struct{
     Rectangle posicao;
     Color cor;
     bool existe;
+    int pontuacao;
 }Fruta;
 
 void IniciaFrutinha(Fruta* fruta);

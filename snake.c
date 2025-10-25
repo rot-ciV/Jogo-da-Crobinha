@@ -73,6 +73,7 @@ void AtualizaDirecao(ListaCobra* Cobra){
 }
 
 void AtualizaPosCobra(ListaCobra* Cobra){
+    
 
     TipoApontador Aux;
     Aux = Cobra->Rabo;
