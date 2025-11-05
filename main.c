@@ -7,7 +7,9 @@
 
 
 int main(){
-
+    //carrega dispositivos de áudio
+    InitAudioDevice();
+    
     Jogo jogo;
 
     int gameOver = 0;
@@ -41,6 +43,7 @@ int main(){
     }
 
     LiberaEspaco(&jogo);
+    CloseAudioDevice();
     CloseWindow();
     return 0;
 }

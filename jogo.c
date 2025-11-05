@@ -19,9 +19,15 @@ void IniciaBordas(Jogo *jogo){
     jogo->borda[3] = (Rectangle) {0, 0, 10, ALTURA};
 }
 
+void IniciaFundo(Jogo *jogo){
+    jogo->fundo = LoadImage("fundo.png");
+    jogo->textura = LoadTextureFromImage(jogo->fundo);
+}
+
 
 void IniciaJogo(Jogo *jogo){
     
+    IniciaFundo(jogo);
     IniciaBordas(jogo);
     IniciaCobra(&jogo->cobra);
     IniciaFrutinha(&jogo->frutinha);
@@ -38,11 +44,17 @@ void DesenhaBordas(Jogo* jogo){
 }
 
 void DesenhaJogo(Jogo* jogo){
+    DesenhaFundo(jogo);
     MostraTempo(jogo);
     DesenhaBordas(jogo);
     DesenhaCobra(&jogo->cobra);
     MostraTempo(jogo);
     DesenhaFrutinha(&jogo->frutinha, &jogo->cobra);
+}
+
+void DesenhaFundo(Jogo* jogo){
+    
+    DrawTexture(jogo->textura, 10, 10, WHITE);
 }
 
 int AtualizaRodada(Jogo* jogo){
@@ -65,6 +77,7 @@ int AtualizaRodada(Jogo* jogo){
 void LiberaEspaco(Jogo* jogo){
 
     LiberaEspacoCobra(&jogo->cobra);
+    DescarregaText(jogo);
 }
 
 void MostraTempo(Jogo* jogo){
@@ -90,4 +103,9 @@ void FimdeJogotxt(Jogo* jogo){
     DrawText(TextFormat("Tempo da partida anterior: %d:%02d", (int)jogo->sessao/60, (int)jogo->sessao%60), 225, 300, 20, WHITE);
     DrawText(TextFormat("Pontuação: %d", jogo->frutinha.pontuacao), 225, 350, 20, WHITE);
     DrawText("Pressione ENTER para tentar novamente.", 150, 400, 20, WHITE); 
+}
+
+void DescarregaText(Jogo* jogo){
+    UnloadTexture(jogo->textura);
+    UnloadTexture(jogo->frutinha.textura);
 }

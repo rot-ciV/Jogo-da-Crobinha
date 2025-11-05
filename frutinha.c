@@ -10,17 +10,25 @@ void IniciaFrutinha(Fruta* fruta){
     fruta->posicao.height = STD_SIZE_Y;
     fruta->posicao.width = STD_SIZE_X;
     fruta->pontuacao = 0;
+
+    //carregar o som
+    fruta->come_fruta = LoadSound("menu_sound_effect_fx.wav");
+
+    //carrega a imagem
+    fruta->foto = LoadImage("moranguinho.png");
+    ImageResize(&fruta->foto, 20, 20);
+    fruta->textura = LoadTextureFromImage(fruta->foto);
+    
 }
 
 void DesenhaFrutinha(Fruta* fruta, ListaCobra* Cobra){
     if(fruta->existe == false){
-
+        PlaySound(fruta->come_fruta);
         AtualizaPosFrutinha(fruta, Cobra);
-        DrawRectangleRec(fruta->posicao, fruta->cor);
+        DrawTexture(fruta->textura, fruta->posicao.x, fruta->posicao.y, WHITE);
 
     }else if(fruta->existe == true){
-
-        DrawRectangleRec(fruta->posicao, fruta->cor);
+        DrawTexture(fruta->textura, fruta->posicao.x, fruta->posicao.y, WHITE);
     }
 }
 
@@ -34,7 +42,7 @@ void AtualizaPosFrutinha(Fruta* frutinha, ListaCobra* Cobra){
     while(testadouro != NULL){
 
         if(CheckCollisionRecs(testadouro->posicao, frutinha->posicao)){
-
+            
             frutinha->posicao.x = 10+20*(rand()%30);
             frutinha->posicao.y = 10+20*(rand()%30);
             testadouro = Cobra->Cabeca;
