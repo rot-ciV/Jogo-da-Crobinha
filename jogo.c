@@ -77,6 +77,7 @@ int AtualizaRodada(Jogo* jogo){
 void LiberaEspaco(Jogo* jogo){
 
     LiberaEspacoCobra(&jogo->cobra);
+    DescarregaText(jogo);
 }
 
 void MostraTempo(Jogo* jogo){
@@ -102,4 +103,9 @@ void FimdeJogotxt(Jogo* jogo){
     DrawText(TextFormat("Tempo da partida anterior: %d:%02d", (int)jogo->sessao/60, (int)jogo->sessao%60), 225, 300, 20, WHITE);
     DrawText(TextFormat("Pontuação: %d", jogo->frutinha.pontuacao), 225, 350, 20, WHITE);
     DrawText("Pressione ENTER para tentar novamente.", 150, 400, 20, WHITE); 
+}
+
+void DescarregaText(Jogo* jogo){
+    UnloadTexture(jogo->textura);
+    UnloadTexture(jogo->frutinha.textura);
 }

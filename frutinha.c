@@ -13,17 +13,22 @@ void IniciaFrutinha(Fruta* fruta){
 
     //carregar o som
     fruta->come_fruta = LoadSound("menu_sound_effect_fx.wav");
+
+    //carrega a imagem
+    fruta->foto = LoadImage("moranguinho.png");
+    ImageResize(&fruta->foto, 20, 20);
+    fruta->textura = LoadTextureFromImage(fruta->foto);
+    
 }
 
 void DesenhaFrutinha(Fruta* fruta, ListaCobra* Cobra){
     if(fruta->existe == false){
         PlaySound(fruta->come_fruta);
         AtualizaPosFrutinha(fruta, Cobra);
-        DrawRectangleRec(fruta->posicao, fruta->cor);
+        DrawTexture(fruta->textura, fruta->posicao.x, fruta->posicao.y, WHITE);
 
     }else if(fruta->existe == true){
-
-        DrawRectangleRec(fruta->posicao, fruta->cor);
+        DrawTexture(fruta->textura, fruta->posicao.x, fruta->posicao.y, WHITE);
     }
 }
 

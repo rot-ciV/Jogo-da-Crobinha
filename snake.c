@@ -101,12 +101,17 @@ void AtualizaPosCobra(ListaCobra* Cobra){
 void DesenhaCobra(ListaCobra* Cobra){
 
     TipoApontador Pintor = Cobra->Cabeca;
-
+    int par = 2;
     while(Pintor != NULL){
-
-        DrawRectangleRec(Pintor->posicao, Pintor->cor);
+        if(par %2 == 1){
+            DrawRectangleRec(Pintor->posicao, GOLD);
+        }else{
+            DrawRectangleRec(Pintor->posicao, Pintor->cor);
+        }par++;
         Pintor = Pintor->Prox;
     }
+    DrawRectangle(Cobra->Cabeca->posicao.x+3, Cobra->Cabeca->posicao.y+3, Cobra->Cabeca->posicao.width/5, Cobra->Cabeca->posicao.height/5, BLACK);
+    DrawRectangle(Cobra->Cabeca->posicao.x+14, Cobra->Cabeca->posicao.y+3, Cobra->Cabeca->posicao.width/5, Cobra->Cabeca->posicao.height/5, BLACK);
 }
 
 void AumentaCobra(ListaCobra* Cobra){
