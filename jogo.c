@@ -19,9 +19,15 @@ void IniciaBordas(Jogo *jogo){
     jogo->borda[3] = (Rectangle) {0, 0, 10, ALTURA};
 }
 
+void IniciaFundo(Jogo *jogo){
+    jogo->fundo = LoadImage("fundo.png");
+    jogo->textura = LoadTextureFromImage(jogo->fundo);
+}
+
 
 void IniciaJogo(Jogo *jogo){
     
+    IniciaFundo(jogo);
     IniciaBordas(jogo);
     IniciaCobra(&jogo->cobra);
     IniciaFrutinha(&jogo->frutinha);
@@ -38,11 +44,17 @@ void DesenhaBordas(Jogo* jogo){
 }
 
 void DesenhaJogo(Jogo* jogo){
+    DesenhaFundo(jogo);
     MostraTempo(jogo);
     DesenhaBordas(jogo);
     DesenhaCobra(&jogo->cobra);
     MostraTempo(jogo);
     DesenhaFrutinha(&jogo->frutinha, &jogo->cobra);
+}
+
+void DesenhaFundo(Jogo* jogo){
+    
+    DrawTexture(jogo->textura, 10, 10, WHITE);
 }
 
 int AtualizaRodada(Jogo* jogo){

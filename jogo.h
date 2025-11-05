@@ -16,6 +16,9 @@ typedef struct{
     Fruta frutinha;
     double tempo;
     float sessao;
+    Image fundo;
+    Texture2D textura;
+    
 }Jogo;
 
 

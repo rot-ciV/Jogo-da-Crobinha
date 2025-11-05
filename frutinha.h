@@ -8,6 +8,7 @@ typedef struct{
     Color cor;
     bool existe;
     int pontuacao;
+    Sound come_fruta;
 }Fruta;
 
 void IniciaFrutinha(Fruta* fruta);
