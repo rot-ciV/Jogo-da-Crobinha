@@ -12,10 +12,10 @@ void IniciaFrutinha(Fruta* fruta){
     fruta->pontuacao = 0;
 
     //carregar o som
-    fruta->come_fruta = LoadSound("menu_sound_effect_fx.wav");
+    fruta->come_fruta = LoadSound("assets/menu_sound_effect_fx.wav");
 
     //carrega a imagem
-    fruta->foto = LoadImage("moranguinho.png");
+    fruta->foto = LoadImage("assets/moranguinho.png");
     ImageResize(&fruta->foto, 20, 20);
     fruta->textura = LoadTextureFromImage(fruta->foto);
     

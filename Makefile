@@ -18,5 +18,4 @@ run:
 
 clean:
 	rm -r main.o jogo.o snake.o frutinha.o crobinha
-preguicoso:
-	rm -r main.o jogo.o snake.o frutinha.o crobinha; make all; ./crobinha
+

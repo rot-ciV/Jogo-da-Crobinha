@@ -20,7 +20,7 @@ void IniciaBordas(Jogo *jogo){
 }
 
 void IniciaFundo(Jogo *jogo){
-    jogo->fundo = LoadImage("fundo.png");
+    jogo->fundo = LoadImage("assets/fundo.png");
     jogo->textura = LoadTextureFromImage(jogo->fundo);
 }
 

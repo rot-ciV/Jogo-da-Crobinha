@@ -5,7 +5,6 @@
 #include "jogo.h"
 
 
-/*IMPLEMENTADO - COMPLETO*/
 void FLVCobra(ListaCobra* Cobra){ 
 
     Cobra->Rabo = NULL;
@@ -13,7 +12,6 @@ void FLVCobra(ListaCobra* Cobra){
     Cobra->tamanho = 0;
 }
 
-/*IMPLEMENTADO - COMPLETO*/
 void IniciaCobra(ListaCobra* Cobra){ 
 
     FLVCobra(Cobra);
@@ -35,13 +33,13 @@ void IniciaCobra(ListaCobra* Cobra){
     Aux->cor = SNAKE_COLOR;
     Cobra->Rabo->cor = SNAKE_COLOR;
 
-    Cobra->Cabeca->posicao = (Rectangle) {LARGURA/2 - STD_SIZE_X, ALTURA - STD_SIZE_Y -10, STD_SIZE_X, STD_SIZE_Y};
-    Aux->posicao = (Rectangle) {LARGURA/2 - STD_SIZE_X, ALTURA - STD_SIZE_Y - 10 + STD_SIZE_Y, STD_SIZE_X, STD_SIZE_Y};
-    Cobra->Rabo->posicao = (Rectangle) {LARGURA/2 - STD_SIZE_X, ALTURA - STD_SIZE_Y -10 + 2*STD_SIZE_Y, STD_SIZE_X, STD_SIZE_Y};
+    Cobra->Cabeca->posicao = (Rectangle) {LARGURA/2 - STD_SIZE_X, ALTURA - STD_SIZE_Y -50, STD_SIZE_X, STD_SIZE_Y};
+    Aux->posicao = (Rectangle) {LARGURA/2 - STD_SIZE_X, ALTURA - STD_SIZE_Y - 50 + STD_SIZE_Y, STD_SIZE_X, STD_SIZE_Y};
+    Cobra->Rabo->posicao = (Rectangle) {LARGURA/2 - STD_SIZE_X, ALTURA - STD_SIZE_Y -50 + 2*STD_SIZE_Y, STD_SIZE_X, STD_SIZE_Y};
 
     /*A linha acima implementa a struct "Rectangle". Em ordem: 
       Rectangle.x = 660/2 - 20, 
-      Rectangle.y = 660 - 20 - 10, 
+      Rectangle.y = 660 - 20 - 50, 
       Rectangle.width (largura) = 20, 
       Rectangle.height (altura) = 20"
 

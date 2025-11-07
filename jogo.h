@@ -25,14 +25,14 @@ typedef struct{
 void IniciaBordas(Jogo* jogo);
 void IniciaJogo(Jogo* jogo);
 void DesenhaJogo(Jogo* jogo);
+void DesenhaFundo(Jogo* jogo);
 void DesenhaBordas(Jogo* jogo);
 int AtualizaRodada(Jogo* jogo);
 void CobraGulosa(Jogo* jogo);
 void MostraTempo(Jogo* jogo);
 void FimdeJogotxt(Jogo* jogo);
+void DescarregaText(Jogo* jogo);
 void LiberaEspaco(Jogo* jogo);
-
-//funções frutinha
 
 
 #endif
