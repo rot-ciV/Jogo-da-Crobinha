@@ -23,16 +23,31 @@ int main(){
 
         BeginDrawing();
         ClearBackground(BLACK);
-
-        if(!gameOver){
+        if(jogo.game_state == menu_prin){
+            DrawMenu(&jogo);
+            AtualizaMenu(&jogo);
+        }else if(jogo.game_state == leaderboards){
+            DrawLeaderboard(&jogo);
+            AtualizaLeaderboard(&jogo);
+        }else if(jogo.game_state == config){
+            DrawConfig(&jogo);
+            AtualizaConfig(&jogo);
+        }else if(jogo.game_state == sair){
+            EndDrawing();
+            LiberaEspaco(&jogo);
+            CloseAudioDevice();
+            CloseWindow();
+            return 0;
+        }
+        if(!gameOver && jogo.game_state == start){
             
             gameOver = AtualizaRodada(&jogo);
             DesenhaJogo(&jogo);
-        }else{
+        }else if(gameOver && jogo.game_state == start){
 
             FimdeJogotxt(&jogo);
             
-            if(IsKeyPressed(KEY_ENTER)){
+            if(IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)){
                 IniciaJogo(&jogo);
                 gameOver = 0;
                 jogo.sessao = 0;
