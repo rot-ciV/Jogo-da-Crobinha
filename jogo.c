@@ -182,9 +182,9 @@ void AtualizaMenu(Jogo* jogo){
     }
     if(jogo->menu.qual_button < 0){
         jogo->menu.qual_button = 3;
-    }
-    if(jogo->menu.qual_button > 3){
-        jogo->menu.qual_button = 0;
+        if(jogo->menu.qual_button > 3){
+            jogo->menu.qual_button = 0;
+        }
     }
 }
 
