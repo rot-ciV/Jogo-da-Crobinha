@@ -13,6 +13,7 @@ void IniciaFrutinha(Fruta* fruta){
 
     //carregar o som
     fruta->come_fruta = LoadSound("assets/menu_sound_effect_fx.wav");
+    SetSoundVolume(fruta->come_fruta, 10.0f);
 
     //carrega a imagem
     fruta->foto = LoadImage("assets/moranguinho.png");
