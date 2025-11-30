@@ -42,6 +42,7 @@ typedef enum{
 typedef struct{
 
     Rectangle borda[4];
+    Rectangle tunel[2];
     ListaCobra cobra;
     Fruta frutinha;
     double tempo;

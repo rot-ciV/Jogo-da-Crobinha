@@ -17,6 +17,7 @@ void IniciaBordas(Jogo *jogo){
     jogo->borda[2] = (Rectangle) {0, ALTURA - 10, LARGURA, 10};
     //Borda da esquerda
     jogo->borda[3] = (Rectangle) {0, 0, 10, ALTURA};
+
 }
 
 void IniciaFundo(Jogo *jogo){
@@ -34,6 +35,7 @@ void IniciaJogo(Jogo *jogo){
     InicializaMenu(jogo);
     InicializaConfig(jogo);
     InicializaLeaderboard(jogo);
+    DefineTunel(jogo, 40, 20, 20, 40);
 
     jogo->game_state = menu_prin;
 
@@ -53,6 +55,7 @@ void DesenhaJogo(Jogo* jogo){
     MostraTempo(jogo);
     DesenhaBordas(jogo);
     DesenhaCobra(&jogo->cobra);
+    DesenhaTunel(jogo);
     MostraTempo(jogo);
     DesenhaFrutinha(&jogo->frutinha, &jogo->cobra);
 }
@@ -73,6 +76,7 @@ int AtualizaRodada(Jogo* jogo){
         jogo->cobra.cooldown = 0.2;
         jogo->sessao += 0.2;
         CobraGulosa(jogo);
+        UsaTunel(jogo->cobra, jogo->tunel);
     }
     
     return MataCobra(&jogo->cobra, jogo->borda);
@@ -274,5 +278,32 @@ void AtualizaLeaderboard(Jogo *jogo){
         if(jogo->leaderboard.qual_button < 0){
             jogo->leaderboard.qual_button = 0;
         }
+    }
+}
+
+// TUNEL.............................
+void DefineTunel(Jogo* jogo, int posx1, int posy1, int posx2, int posy2){
+
+    jogo->tunel[0] = (Rectangle) {posx1, posy1, STD_SIZE_X, STD_SIZE_Y};
+
+    jogo->tunel[1] = (Rectangle) {posx2, posy2, STD_SIZE_X, STD_SIZE_Y};
+
+}
+
+void DesenhaTunel (Jogo*jogo){
+
+    for(int i = 0; i<2; i++){
+        for(int i = 0; i < 2; i++){
+            DrawRectangleRec(jogo->tunel[i], BROWN);
+        }
+    }
+}
+
+void UsaTunel(ListaCobra cobra, Rectangle tunel[]){
+    if(CheckCollisionRecs(tunel[0], cobra.Cabeca->posicao)){
+        cobra.Cabeca->posicao = tunel[1];
+    }
+    if(CheckCollisionRecs(tunel[1], cobra.Cabeca->posicao)){
+        cobra.Cabeca->posicao = tunel[0];
     }
 }
