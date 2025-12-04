@@ -134,15 +134,23 @@ int MataCobra(ListaCobra* Cobra, Rectangle borda[4]){
 
         Testadouro = Testadouro->Prox;
     }
-
-    for(int i = 0; i < 4; i++){
-
-        if(CheckCollisionRecs(Cobra->Cabeca->posicao, borda[i])){
-            return 1;
-        }
-    }
-
     return 0;
+}
+
+void cruzaCobra(ListaCobra* Cobra, Rectangle borda[4]){
+
+    if(CheckCollisionRecs(borda[0], Cobra->Cabeca->posicao)){
+        Cobra->Cabeca->posicao.y = borda[2].y-STD_SIZE_Y;
+    }
+    if(CheckCollisionRecs(borda[1], Cobra->Cabeca->posicao)){
+        Cobra->Cabeca->posicao.x = borda[3].x+STD_SIZE_X;
+    }
+    if(CheckCollisionRecs(borda[2], Cobra->Cabeca->posicao)){
+        Cobra->Cabeca->posicao.y = borda[0].y;
+    }
+    if(CheckCollisionRecs(borda[3], Cobra->Cabeca->posicao)){
+        Cobra->Cabeca->posicao.x = borda[1].x;
+    }
 }
 
 

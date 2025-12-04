@@ -55,7 +55,6 @@ void DesenhaJogo(Jogo* jogo){
     MostraTempo(jogo);
     DesenhaBordas(jogo);
     DesenhaCobra(&jogo->cobra);
-    DesenhaTunel(jogo);
     MostraTempo(jogo);
     DesenhaFrutinha(&jogo->frutinha, &jogo->cobra);
 }
@@ -76,7 +75,7 @@ int AtualizaRodada(Jogo* jogo){
         jogo->cobra.cooldown = 0.2;
         jogo->sessao += 0.2;
         CobraGulosa(jogo);
-        UsaTunel(jogo->cobra, jogo->tunel);
+        cruzaCobra(&jogo->cobra, jogo->borda);
     }
     
     return MataCobra(&jogo->cobra, jogo->borda);
