@@ -8,6 +8,7 @@
 
 #include "snake.h"
 #include "frutinha.h"
+#include "mapa.h"
 
 
 typedef struct{
@@ -39,15 +40,16 @@ typedef enum{
     menu_prin, config, leaderboards, start, sair
 }Game_state;
 
+// Retirado: borda, tunel, fundo,
+//Colocado: Struct Mapa e int Nivel
 typedef struct{
 
-    Rectangle borda[4];
-    Rectangle tunel[2];
+    Mapa mapa;
+    int nivel;
     ListaCobra cobra;
     Fruta frutinha;
     double tempo;
     float sessao;
-    Image fundo;
     Texture2D textura;
     Menu menu;
     Config config;
@@ -55,12 +57,19 @@ typedef struct{
     Game_state game_state;
 }Jogo;
 
+/*
+Funções Retiradas:
 
-void IniciaBordas(Jogo* jogo);
+- IniciaFundo
+- IniciaBordas
+- DesenhaBordas
+- DesenhaFundo
+- DefineTunel (Nome trocado para IniciaTunel em mapa)
+- DesenhaTunel
+*/
+
 void IniciaJogo(Jogo* jogo);
 void DesenhaJogo(Jogo* jogo);
-void DesenhaFundo(Jogo* jogo);
-void DesenhaBordas(Jogo* jogo);
 int AtualizaRodada(Jogo* jogo);
 void CobraGulosa(Jogo* jogo);
 void MostraTempo(Jogo* jogo);
@@ -76,6 +85,8 @@ void AtualizaConfig(Jogo* jogo);
 void InicializaLeaderboard(Jogo* jogo);
 void DrawLeaderboard(Jogo* jogo);
 void AtualizaLeaderboard(Jogo* jogo);
+void UsaTunel(Jogo* jogo);
+void TrocaMapa(Jogo* jogo);
 
 
 #endif

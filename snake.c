@@ -123,7 +123,7 @@ void AumentaCobra(ListaCobra* Cobra){
     Cobra->tamanho++;
 }
 
-int MataCobra(ListaCobra* Cobra, Rectangle borda[4]){
+int MataCobra(ListaCobra* Cobra, Rectangle borda[4], int nivel){
 
     TipoApontador Testadouro = Cobra->Cabeca->Prox;
     while(Testadouro != NULL){
@@ -134,10 +134,30 @@ int MataCobra(ListaCobra* Cobra, Rectangle borda[4]){
 
         Testadouro = Testadouro->Prox;
     }
-    return 0;
+    return cruzaCobra(Cobra, borda, nivel);
 }
 
-void cruzaCobra(ListaCobra* Cobra, Rectangle borda[4]){
+/* A função cruzaCobra muda de funcionalidade depedendo do mapa que estamos, se for mapa 1, vê se a cobra bateu 
+na borda e retorna 1 para mata cobra, se for os outros mapas, apenas teleporta a cobra. 
+*/
+int cruzaCobra(ListaCobra* Cobra, Rectangle borda[4], int nivel){
+
+    if(nivel == 1){
+        if(CheckCollisionRecs(borda[0], Cobra->Cabeca->posicao)){
+        return 1;
+        }
+        if(CheckCollisionRecs(borda[1], Cobra->Cabeca->posicao)){
+        return 1;
+        }
+        if(CheckCollisionRecs(borda[2], Cobra->Cabeca->posicao)){
+        return 1;
+        }
+        if(CheckCollisionRecs(borda[3], Cobra->Cabeca->posicao)){
+        return 1;
+        }
+
+        return 0;
+    }
 
     if(CheckCollisionRecs(borda[0], Cobra->Cabeca->posicao)){
         Cobra->Cabeca->posicao.y = borda[2].y-STD_SIZE_Y;
@@ -151,6 +171,8 @@ void cruzaCobra(ListaCobra* Cobra, Rectangle borda[4]){
     if(CheckCollisionRecs(borda[3], Cobra->Cabeca->posicao)){
         Cobra->Cabeca->posicao.x = borda[1].x;
     }
+
+    return 0;
 }
 
 

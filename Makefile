@@ -1,5 +1,5 @@
-all: main.o jogo.o snake.o frutinha.o
-	gcc jogo.o main.o snake.o frutinha.o -o crobinha -lraylib -lm -lpthread -ldl -lGL -lX11
+all: main.o jogo.o snake.o frutinha.o mapa.o
+	gcc jogo.o main.o snake.o frutinha.o mapa.o -o crobinha -lraylib -lm -lpthread -ldl -lGL -lX11
 
 main.o: main.c jogo.h snake.h
 	gcc -g -c main.c
@@ -13,9 +13,12 @@ snake.o: snake.h snake.c
 frutinha.o: frutinha.h frutinha.c
 	gcc -g -c frutinha.c
 
+mapa.o: mapa.h mapa.c
+	gcc -g -c mapa.c
+
 run:
 	./crobinha
 
 clean:
-	rm -r main.o jogo.o snake.o frutinha.o crobinha
+	rm -r main.o jogo.o snake.o frutinha.o mapa.o crobinha
 

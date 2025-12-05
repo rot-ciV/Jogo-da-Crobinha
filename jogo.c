@@ -4,38 +4,24 @@
 #include "jogo.h"
 #include "snake.h"
 #include "frutinha.h"
+#include "mapa.h"
 #include <time.h>
 
 
 
-void IniciaBordas(Jogo *jogo){
-    //Borda de cima
-    jogo->borda[0] = (Rectangle) {0, 0, LARGURA, 10};
-    //Borda da direita
-    jogo->borda[1] = (Rectangle) {LARGURA - 10, 0, 10, ALTURA};
-    //Borda de baixo
-    jogo->borda[2] = (Rectangle) {0, ALTURA - 10, LARGURA, 10};
-    //Borda da esquerda
-    jogo->borda[3] = (Rectangle) {0, 0, 10, ALTURA};
-
-}
-
-void IniciaFundo(Jogo *jogo){
-    jogo->fundo = LoadImage("assets/fundo.png");
-    jogo->textura = LoadTextureFromImage(jogo->fundo);
-}
 
 
+//Colocado: IniciaMapa
+//Retirado: DefineTunel
 void IniciaJogo(Jogo *jogo){
-    
-    IniciaFundo(jogo);
-    IniciaBordas(jogo);
+
+    jogo->nivel = 1;
+    IniciaMapa(&jogo->mapa, jogo->nivel);
     IniciaCobra(&jogo->cobra);
     IniciaFrutinha(&jogo->frutinha);
     InicializaMenu(jogo);
     InicializaConfig(jogo);
     InicializaLeaderboard(jogo);
-    DefineTunel(jogo, 40, 20, 20, 40);
 
     jogo->game_state = menu_prin;
 
@@ -43,25 +29,15 @@ void IniciaJogo(Jogo *jogo){
     jogo->cobra.cooldown = 0.2;
 }
 
-void DesenhaBordas(Jogo* jogo){
-
-    for(int i = 0; i < 4; i++){
-        DrawRectangleRec(jogo->borda[i], GRAY);
-    }
-}
-
+//Retirado: DesenhaFundo, DesenhaBordas
+//Colocado: DesenhaMapa
 void DesenhaJogo(Jogo* jogo){
-    DesenhaFundo(jogo);
+    
+    DesenhaMapa(&jogo->mapa);
     MostraTempo(jogo);
-    DesenhaBordas(jogo);
     DesenhaCobra(&jogo->cobra);
     MostraTempo(jogo);
     DesenhaFrutinha(&jogo->frutinha, &jogo->cobra);
-}
-
-void DesenhaFundo(Jogo* jogo){
-    
-    DrawTexture(jogo->textura, 10, 10, WHITE);
 }
 
 int AtualizaRodada(Jogo* jogo){
@@ -75,10 +51,12 @@ int AtualizaRodada(Jogo* jogo){
         jogo->cobra.cooldown = 0.2;
         jogo->sessao += 0.2;
         CobraGulosa(jogo);
-        cruzaCobra(&jogo->cobra, jogo->borda);
+        UsaTunel(jogo);
+        TrocaMapa(jogo);
+        //retirei cruzaCobra daqui (TESTE)
     }
     
-    return MataCobra(&jogo->cobra, jogo->borda);
+    return MataCobra(&jogo->cobra, jogo->mapa.borda, jogo->nivel);
 }
 
 
@@ -281,28 +259,35 @@ void AtualizaLeaderboard(Jogo *jogo){
 }
 
 // TUNEL.............................
-void DefineTunel(Jogo* jogo, int posx1, int posy1, int posx2, int posy2){
 
-    jogo->tunel[0] = (Rectangle) {posx1, posy1, STD_SIZE_X, STD_SIZE_Y};
 
-    jogo->tunel[1] = (Rectangle) {posx2, posy2, STD_SIZE_X, STD_SIZE_Y};
+void UsaTunel(Jogo* jogo){
 
-}
+    for(int i = 0; i < jogo->mapa.numTunel; i += 2){
 
-void DesenhaTunel (Jogo*jogo){
-
-    for(int i = 0; i<2; i++){
-        for(int i = 0; i < 2; i++){
-            DrawRectangleRec(jogo->tunel[i], BROWN);
+        if(CheckCollisionRecs(jogo->mapa.tunel[i], jogo->cobra.Cabeca->posicao)){
+            jogo->cobra.Cabeca->posicao = jogo->mapa.tunel[i+1];
+        }
+        else if(CheckCollisionRecs(jogo->mapa.tunel[i+1], jogo->cobra.Cabeca->posicao)){
+            jogo->cobra.Cabeca->posicao = jogo->mapa.tunel[i];
         }
     }
+    
 }
 
-void UsaTunel(ListaCobra cobra, Rectangle tunel[]){
-    if(CheckCollisionRecs(tunel[0], cobra.Cabeca->posicao)){
-        cobra.Cabeca->posicao = tunel[1];
-    }
-    if(CheckCollisionRecs(tunel[1], cobra.Cabeca->posicao)){
-        cobra.Cabeca->posicao = tunel[0];
+// MAPA................................
+
+void TrocaMapa(Jogo* jogo){
+
+    if(jogo->cobra.tamanho >= 5){
+
+        DescarregaMapa(&jogo->mapa);
+        LiberaEspacoCobra(&jogo->cobra);
+        jogo->nivel += 1;
+        
+        FLVCobra(&jogo->cobra);
+        IniciaMapa(&jogo->mapa, jogo->nivel);
+        IniciaCobra(&jogo->cobra);
+        IniciaFrutinha(&jogo->frutinha);
     }
 }

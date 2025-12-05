@@ -28,8 +28,8 @@ void AtualizaDirecao(ListaCobra* Cobra);
 void AtualizaPosCobra(ListaCobra* Cobra);
 void DesenhaCobra(ListaCobra* Cobra);
 void AumentaCobra(ListaCobra* Cobra);
-int MataCobra(ListaCobra* Cobra, Rectangle borda[4]);
-void cruzaCobra(ListaCobra* Cobra, Rectangle borda[4]);
+int MataCobra(ListaCobra* Cobra, Rectangle borda[4], int nivel);
+int cruzaCobra(ListaCobra* Cobra, Rectangle borda[4], int nivel);
 
 void LiberaEspacoCobra(ListaCobra* cobra);
 #endif
