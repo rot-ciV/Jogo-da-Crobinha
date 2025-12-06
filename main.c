@@ -17,7 +17,9 @@ int main(){
 
     InitWindow(LARGURA, ALTURA, "Snake Game");
     SetTargetFPS(30);
+    jogo.resize_var = 1;
     IniciaJogo(&jogo);
+    jogo.frutinha.pontuacao = 0;
 
     while(!WindowShouldClose()){
 
@@ -35,12 +37,12 @@ int main(){
         }else if(jogo.game_state == sair){
             EndDrawing();
             LiberaEspaco(&jogo);
+            UnloadMusicStream(jogo.music_game);
             CloseAudioDevice();
             CloseWindow();
             return 0;
         }
         if(!gameOver && jogo.game_state == start){
-            
             gameOver = AtualizaRodada(&jogo);
             DesenhaJogo(&jogo);
         }else if(gameOver && jogo.game_state == start){
@@ -49,6 +51,7 @@ int main(){
             
             if(IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)){
                 IniciaJogo(&jogo);
+                jogo.frutinha.pontuacao = 0;
                 gameOver = 0;
                 jogo.sessao = 0;
             }

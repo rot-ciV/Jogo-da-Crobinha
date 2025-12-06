@@ -10,6 +10,7 @@ void FLVCobra(ListaCobra* Cobra){
     Cobra->Rabo = NULL;
     Cobra->Cabeca = NULL;
     Cobra->tamanho = 0;
+    Cobra->morte = LoadSound("assets/morreu.wav");
 }
 
 void IniciaCobra(ListaCobra* Cobra){ 
@@ -33,18 +34,18 @@ void IniciaCobra(ListaCobra* Cobra){
     Aux->cor = SNAKE_COLOR;
     Cobra->Rabo->cor = SNAKE_COLOR;
 
-    Cobra->Cabeca->posicao = (Rectangle) {LARGURA/2 - STD_SIZE_X, ALTURA - STD_SIZE_Y -50, STD_SIZE_X, STD_SIZE_Y};
-    Aux->posicao = (Rectangle) {LARGURA/2 - STD_SIZE_X, ALTURA - STD_SIZE_Y - 50 + STD_SIZE_Y, STD_SIZE_X, STD_SIZE_Y};
-    Cobra->Rabo->posicao = (Rectangle) {LARGURA/2 - STD_SIZE_X, ALTURA - STD_SIZE_Y -50 + 2*STD_SIZE_Y, STD_SIZE_X, STD_SIZE_Y};
+    Cobra->Cabeca->posicao = (Rectangle) {(LARGURA*Cobra->resize_var)/2 - (STD_SIZE_X*Cobra->resize_var), (ALTURA*Cobra->resize_var) - ((STD_SIZE_Y*Cobra->resize_var)*Cobra->resize_var) - 50*Cobra->resize_var, (STD_SIZE_X*Cobra->resize_var), (STD_SIZE_Y*Cobra->resize_var)};
+    Aux->posicao = (Rectangle) {(LARGURA*Cobra->resize_var)/2 - (STD_SIZE_X*Cobra->resize_var), (ALTURA*Cobra->resize_var) - ((STD_SIZE_Y*Cobra->resize_var)*Cobra->resize_var) - 50*Cobra->resize_var + (STD_SIZE_Y*Cobra->resize_var), (STD_SIZE_X*Cobra->resize_var), (STD_SIZE_Y*Cobra->resize_var)};
+    Cobra->Rabo->posicao = (Rectangle) {(LARGURA*Cobra->resize_var)/2 - (STD_SIZE_X*Cobra->resize_var), (ALTURA*Cobra->resize_var) - ((STD_SIZE_Y*Cobra->resize_var)*Cobra->resize_var) - 50*Cobra->resize_var + 2*(STD_SIZE_Y*Cobra->resize_var), (STD_SIZE_X*Cobra->resize_var), (STD_SIZE_Y*Cobra->resize_var)};
 
     /*A linha acima implementa a struct "Rectangle". Em ordem: 
       Rectangle.x = 660/2 - 20, 
       Rectangle.y = 660 - 20 - 50, 
-      Rectangle.width (largura) = 20, 
-      Rectangle.height (altura) = 20"
+      Rectangle.width ((largura*Cobra->resize_var)) = 20, 
+      Rectangle.height ((altura*Cobra->resize_var)) =( 20"
 
-      O "Rectangle" é uma struct que cotem 4 dados: Altura, Largura, x e y, sendo esses últimos as coordenadas do canto superior esquerdo do retângulo
-      Assim, o retangulo cresce para a direita com o valor da largura e para baixo com base no valor da altura*/
+    *Cobra->resize_var)  O "Rectangle" é uma struct que cotem 4 dados: (Altura*Cobra->resize_var), ((Largura*Co*Cobra->resize_var)bra->resize_var), x e y, sendo esses últimos as coordenadas do canto superior esquerdo do retângulo
+      Assim, o retangulo cresce para a direita com o valor da (largura*Cobra->resize_var) e para baixo com base no valor da (altura*Cobra->resize_var)*/
 
     Cobra->direcao = 0;
     Cobra->tamanho = 3;
@@ -86,10 +87,10 @@ void AtualizaPosCobra(ListaCobra* Cobra){
 
     switch (Cobra->direcao){
 
-        case 0: Nova_Posicao.y -= STD_SIZE_Y; break;
-        case 1: Nova_Posicao.x += STD_SIZE_X; break;
-        case 2: Nova_Posicao.y += STD_SIZE_Y; break;
-        case 3: Nova_Posicao.x -= STD_SIZE_X; break;
+        case 0: Nova_Posicao.y -= (STD_SIZE_Y*Cobra->resize_var); break;
+        case 1: Nova_Posicao.x += (STD_SIZE_X*Cobra->resize_var); break;
+        case 2: Nova_Posicao.y += (STD_SIZE_Y*Cobra->resize_var); break;
+        case 3: Nova_Posicao.x -= (STD_SIZE_X*Cobra->resize_var); break;
     }
 
     Cobra->Cabeca->posicao = Nova_Posicao;
@@ -108,8 +109,11 @@ void DesenhaCobra(ListaCobra* Cobra){
         }par++;
         Pintor = Pintor->Prox;
     }
-    DrawRectangle(Cobra->Cabeca->posicao.x+3, Cobra->Cabeca->posicao.y+3, Cobra->Cabeca->posicao.width/5, Cobra->Cabeca->posicao.height/5, BLACK);
-    DrawRectangle(Cobra->Cabeca->posicao.x+14, Cobra->Cabeca->posicao.y+3, Cobra->Cabeca->posicao.width/5, Cobra->Cabeca->posicao.height/5, BLACK);
+    DrawRectangle(Cobra->Cabeca->posicao.x+(3*Cobra->resize_var), Cobra->Cabeca->posicao.y+(3*Cobra->resize_var), 
+                   Cobra->Cabeca->posicao.width/(5/Cobra->resize_var), Cobra->Cabeca->posicao.height/(5/Cobra->resize_var), BLACK);
+
+    DrawRectangle(Cobra->Cabeca->posicao.x+(14*Cobra->resize_var), Cobra->Cabeca->posicao.y+(3*Cobra->resize_var), 
+                   Cobra->Cabeca->posicao.width/(5/Cobra->resize_var), Cobra->Cabeca->posicao.height/(5/Cobra->resize_var), BLACK);
 }
 
 void AumentaCobra(ListaCobra* Cobra){
@@ -129,6 +133,7 @@ int MataCobra(ListaCobra* Cobra, Rectangle borda[4], int nivel){
     while(Testadouro != NULL){
 
         if(Testadouro->posicao.x == Cobra->Cabeca->posicao.x && Testadouro->posicao.y == Cobra->Cabeca->posicao.y){
+            PlaySound(Cobra->morte);
             return 1;
         }
 
@@ -144,15 +149,19 @@ int cruzaCobra(ListaCobra* Cobra, Rectangle borda[4], int nivel){
 
     if(nivel == 1){
         if(CheckCollisionRecs(borda[0], Cobra->Cabeca->posicao)){
+            PlaySound(Cobra->morte);
         return 1;
         }
-        if(CheckCollisionRecs(borda[1], Cobra->Cabeca->posicao)){
+        else if(CheckCollisionRecs(borda[1], Cobra->Cabeca->posicao)){
+            PlaySound(Cobra->morte);
         return 1;
         }
-        if(CheckCollisionRecs(borda[2], Cobra->Cabeca->posicao)){
+        else if(CheckCollisionRecs(borda[2], Cobra->Cabeca->posicao)){
+            PlaySound(Cobra->morte);
         return 1;
         }
-        if(CheckCollisionRecs(borda[3], Cobra->Cabeca->posicao)){
+        else if(CheckCollisionRecs(borda[3], Cobra->Cabeca->posicao)){
+            PlaySound(Cobra->morte);
         return 1;
         }
 
@@ -160,15 +169,15 @@ int cruzaCobra(ListaCobra* Cobra, Rectangle borda[4], int nivel){
     }
 
     if(CheckCollisionRecs(borda[0], Cobra->Cabeca->posicao)){
-        Cobra->Cabeca->posicao.y = borda[2].y-STD_SIZE_Y;
+        Cobra->Cabeca->posicao.y = borda[2].y-(STD_SIZE_Y*Cobra->resize_var);
     }
-    if(CheckCollisionRecs(borda[1], Cobra->Cabeca->posicao)){
-        Cobra->Cabeca->posicao.x = borda[3].x+STD_SIZE_X;
+    else if(CheckCollisionRecs(borda[1], Cobra->Cabeca->posicao)){
+        Cobra->Cabeca->posicao.x = borda[3].x+(STD_SIZE_X*Cobra->resize_var);
     }
-    if(CheckCollisionRecs(borda[2], Cobra->Cabeca->posicao)){
+    else if(CheckCollisionRecs(borda[2], Cobra->Cabeca->posicao)){
         Cobra->Cabeca->posicao.y = borda[0].y;
     }
-    if(CheckCollisionRecs(borda[3], Cobra->Cabeca->posicao)){
+    else if(CheckCollisionRecs(borda[3], Cobra->Cabeca->posicao)){
         Cobra->Cabeca->posicao.x = borda[1].x;
     }
 

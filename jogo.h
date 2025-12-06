@@ -20,7 +20,7 @@ typedef struct{
     Texture2D textura;
     Image imagem;
     Sound som;
-    unsigned short int qual_button;
+    int qual_button;
 }Menu;
 
 
@@ -28,12 +28,12 @@ typedef struct{
     Rectangle res660;
     Rectangle res858;
     Rectangle voltar;
-    unsigned short int qual_button;
+    int qual_button;
 }Config;
 
 typedef struct{
     Rectangle voltar;
-    unsigned short int qual_button;
+    int qual_button;
 }Leaderboard;
 
 typedef enum{
@@ -55,6 +55,8 @@ typedef struct{
     Config config;
     Leaderboard leaderboard;
     Game_state game_state;
+    float resize_var;
+    Music music_game;
 }Jogo;
 
 /*
@@ -71,6 +73,7 @@ Funções Retiradas:
 void IniciaJogo(Jogo* jogo);
 void DesenhaJogo(Jogo* jogo);
 int AtualizaRodada(Jogo* jogo);
+void tocaMusica(Jogo* jogo);
 void CobraGulosa(Jogo* jogo);
 void MostraTempo(Jogo* jogo);
 void FimdeJogotxt(Jogo* jogo);

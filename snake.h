@@ -19,6 +19,9 @@ typedef struct{
     int tamanho;
     int direcao;
     double cooldown;
+    float resize_var;
+    Sound morte;
+
 }ListaCobra;
 
 

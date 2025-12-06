@@ -8,9 +8,11 @@ typedef struct{
     Color cor;
     bool existe;
     int pontuacao;
-    Sound come_fruta;
+    Sound come_frutinha;
     Image foto;
     Texture2D textura;
+    float resize_var;
+
 }Fruta;
 
 void IniciaFrutinha(Fruta* fruta);
