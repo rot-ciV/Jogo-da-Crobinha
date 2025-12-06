@@ -12,7 +12,10 @@ typedef struct{
     Rectangle borda[20];
     Rectangle tunel[8];
     Rectangle obstaculos[30];
+    Image im_fundo;
     Texture2D fundo;
+    float resize_var;
+
 
 }Mapa;
 

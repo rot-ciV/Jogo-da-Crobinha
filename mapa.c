@@ -9,7 +9,7 @@ void IniciaMapa(Mapa* mapa, int nivel){
     IniciaFundo(mapa, nivel);
     IniciaBorda(mapa, nivel);
     IniciaTunel(mapa, nivel);
-    IniciaObstaculos(mapa, nivel);  
+    IniciaObstaculos(mapa, nivel);
 }
 
 void DesenhaMapa(Mapa* mapa){
@@ -33,14 +33,14 @@ void IniciaFundo(Mapa* mapa, int nivel){
     Image aux;
 
     if(nivel == 1){
-        aux = LoadImage("assets/fundo01.png");
+        aux = LoadImage("assets/fundo.png");
 
         mapa->fundo = LoadTextureFromImage(aux);
         UnloadImage(aux);
     }
 
     else if(nivel == 2){
-        aux = LoadImage("assets/fundo02.png");
+        aux = LoadImage("assets/fundo01.png");
 
         mapa->fundo = LoadTextureFromImage(aux);
         UnloadImage(aux);
@@ -48,7 +48,7 @@ void IniciaFundo(Mapa* mapa, int nivel){
     }
 
     else if(nivel == 3){
-        aux = LoadImage("assets/fundo01.png");
+        aux = LoadImage("assets/fundo02.png");
 
         mapa->fundo = LoadTextureFromImage(aux);
         UnloadImage(aux);
@@ -58,7 +58,7 @@ void IniciaFundo(Mapa* mapa, int nivel){
 
 void DesenhaFundo(Mapa* mapa){
     
-    DrawTexture(mapa->fundo, 10, 10, WHITE);
+    DrawTextureEx(mapa->fundo, (Vector2){0,0}, 0, mapa->resize_var, WHITE);
 }
 
 void DescarregaFundo(Mapa* mapa){
@@ -72,13 +72,13 @@ void IniciaBorda(Mapa* mapa, int nivel){
     
         mapa->numBorda = 4;
         //Borda de cima
-        mapa->borda[0] = (Rectangle) {0, 0, LARGURA, 10};
+        mapa->borda[0] = (Rectangle) {0, 0, (LARGURA*mapa->resize_var), 10*mapa->resize_var};
         //Borda da direita
-        mapa->borda[1] = (Rectangle) {LARGURA - 10, 0, 10, ALTURA};
+        mapa->borda[1] = (Rectangle) {(LARGURA*mapa->resize_var) - 10*mapa->resize_var, 0, 10*mapa->resize_var, (ALTURA*mapa->resize_var)};
         //Borda de baixo
-        mapa->borda[2] = (Rectangle) {0, ALTURA - 10, LARGURA, 10};
+        mapa->borda[2] = (Rectangle) {0, (ALTURA*mapa->resize_var) - 10*mapa->resize_var, (LARGURA*mapa->resize_var), 10*mapa->resize_var};
         //Borda da esquerda
-        mapa->borda[3] = (Rectangle) {0, 0, 10, ALTURA};   
+        mapa->borda[3] = (Rectangle) {0, 0, 10*mapa->resize_var, (ALTURA*mapa->resize_var)};   
     }
 
     else if(nivel == 2){
@@ -89,13 +89,13 @@ void IniciaBorda(Mapa* mapa, int nivel){
 
         mapa->numBorda = 4;
         //Borda de cima
-        mapa->borda[0] = (Rectangle) {0, 0, LARGURA, 10};
+        mapa->borda[0] = (Rectangle) {0, 0, (LARGURA*mapa->resize_var), 10*mapa->resize_var};
         //Borda da direita
-        mapa->borda[1] = (Rectangle) {LARGURA - 10, 0, 10, ALTURA};
+        mapa->borda[1] = (Rectangle) {(LARGURA*mapa->resize_var) - 10*mapa->resize_var, 0, 10*mapa->resize_var, (ALTURA*mapa->resize_var)};
         //Borda de baixo
-        mapa->borda[2] = (Rectangle) {0, ALTURA - 10, LARGURA, 10};
+        mapa->borda[2] = (Rectangle) {0, (ALTURA*mapa->resize_var) - 10*mapa->resize_var, (LARGURA*mapa->resize_var), 10*mapa->resize_var};
         //Borda da esquerda
-        mapa->borda[3] = (Rectangle) {0, 0, 10, ALTURA};
+        mapa->borda[3] = (Rectangle) {0, 0, 10*mapa->resize_var, (ALTURA*mapa->resize_var)};
     }
 }
 
@@ -118,16 +118,16 @@ void IniciaTunel(Mapa* mapa, int nivel){
 
         mapa->numTunel =  2;
 
-        mapa->tunel[0] = (Rectangle) {20, 20, STD_SIZE_X, STD_SIZE_Y};
-        mapa->tunel[1] = (Rectangle) {100, 100, STD_SIZE_X, STD_SIZE_Y};
+        mapa->tunel[0] = (Rectangle) {20*mapa->resize_var, 20*mapa->resize_var, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var};
+        mapa->tunel[1] = (Rectangle) {100*mapa->resize_var, 100*mapa->resize_var, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var};
     }
 
     else if(nivel == 3){
 
         mapa->numTunel =  2;
 
-        mapa->tunel[0] = (Rectangle) {100, 100, STD_SIZE_X, STD_SIZE_Y};
-        mapa->tunel[1] = (Rectangle) {200, 200, STD_SIZE_X, STD_SIZE_Y};
+        mapa->tunel[0] = (Rectangle) {100*mapa->resize_var, 100*mapa->resize_var, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var};
+        mapa->tunel[1] = (Rectangle) {200*mapa->resize_var, 200*mapa->resize_var, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var};
     }
 }
 
@@ -150,16 +150,16 @@ void IniciaObstaculos(Mapa* mapa, int nivel){
 
         mapa->numObstaculos =  2;
 
-        mapa->obstaculos[0] = (Rectangle) {160, 160, STD_SIZE_X, STD_SIZE_Y};
-        mapa->obstaculos[1] = (Rectangle) {300, 300, STD_SIZE_X, STD_SIZE_Y};
+        mapa->obstaculos[0] = (Rectangle) {160*mapa->resize_var, 160*mapa->resize_var, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var};
+        mapa->obstaculos[1] = (Rectangle) {300*mapa->resize_var, 300*mapa->resize_var, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var};
     }
 
     else if(nivel == 3){
 
         mapa->numObstaculos =  2;
 
-        mapa->obstaculos[0] = (Rectangle) {80, 80, STD_SIZE_X, STD_SIZE_Y};
-        mapa->obstaculos[1] = (Rectangle) {180, 180, STD_SIZE_X, STD_SIZE_Y};
+        mapa->obstaculos[0] = (Rectangle) {80*mapa->resize_var, 80*mapa->resize_var, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var};
+        mapa->obstaculos[1] = (Rectangle) {180*mapa->resize_var, 180*mapa->resize_var, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var};
     }
 }
 
@@ -167,7 +167,7 @@ void DesenhaObstaculos(Mapa* mapa){
 
     for(int i = 0; i < mapa->numObstaculos; i++){
 
-        DrawRectangleRec(mapa->tunel[i], RED);
+        DrawRectangleRec(mapa->tunel[i], BLUE);
     }
 }
 
