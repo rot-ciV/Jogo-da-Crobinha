@@ -90,6 +90,8 @@ void DrawLeaderboard(Jogo* jogo);
 void AtualizaLeaderboard(Jogo* jogo);
 void UsaTunel(Jogo* jogo);
 void TrocaMapa(Jogo* jogo);
+int MataCobra(Jogo* jogo);
+void AtualizaPosFrutinha(Jogo* jogo);
 
 
 #endif

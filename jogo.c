@@ -7,10 +7,6 @@
 #include "mapa.h"
 #include <time.h>
 
-
-
-
-
 //Colocado: IniciaMapa
 //Retirado: DefineTunel
 void IniciaJogo(Jogo *jogo){
@@ -40,8 +36,7 @@ void DesenhaJogo(Jogo* jogo){
     
     DesenhaMapa(&jogo->mapa);
     MostraTempo(jogo);
-    DesenhaCobra(&jogo->cobra);
-    MostraTempo(jogo);
+    DesenhaCobra(&jogo->cobra); 
     DesenhaFrutinha(&jogo->frutinha, &jogo->cobra);
 }
 
@@ -60,12 +55,12 @@ int AtualizaRodada(Jogo* jogo){
         CobraGulosa(jogo);
         UsaTunel(jogo);
         TrocaMapa(jogo);
-        //retirei cruzaCobra daqui (TESTE)
+        cruzaCobra(&jogo->cobra);
     }
     
     tocaMusica(jogo);
 
-    return MataCobra(&jogo->cobra, jogo->mapa.borda, jogo->nivel);
+    return MataCobra(jogo);
 }
 
 void tocaMusica(Jogo* jogo){
@@ -98,6 +93,7 @@ void CobraGulosa(Jogo* jogo){
         AumentaCobra(&jogo->cobra);
         jogo->frutinha.pontuacao++;
         jogo->frutinha.existe = false;
+        AtualizaPosFrutinha(jogo);
     }
 }
 
@@ -309,7 +305,7 @@ void TrocaMapa(Jogo* jogo){
     /*se vcs alterarem o valor do if(jogo->cobra.tamanho >= n), mude a terceira linha
     do atualizaposicaofrutinha*/
     if(jogo->nivel != 3){
-        if(jogo->cobra.tamanho >= 5){
+        if(jogo->cobra.tamanho >= 20){
     
             DescarregaMapa(&jogo->mapa);
             LiberaEspacoCobra(&jogo->cobra);
@@ -322,4 +318,88 @@ void TrocaMapa(Jogo* jogo){
         }
 
     }
+}
+
+// NOVA MATA COBRA
+
+int MataCobra(Jogo* jogo){
+
+    TipoApontador Testadouro = jogo->cobra.Cabeca->Prox;
+    while(Testadouro != NULL){
+
+        if(Testadouro->posicao.x == jogo->cobra.Cabeca->posicao.x && Testadouro->posicao.y == jogo->cobra.Cabeca->posicao.y){
+            PlaySound(jogo->cobra.morte);
+            return 1;
+        }
+
+        Testadouro = Testadouro->Prox;
+    }
+
+    Testadouro = jogo->cobra.Cabeca;
+
+    for(int i = 0; i < jogo->mapa.numObstaculos; i++){
+
+        if(CheckCollisionRecs(Testadouro->posicao, jogo->mapa.obstaculos[i])){
+
+            PlaySound(jogo->cobra.morte);
+            return 1;
+        }
+    }
+
+    for(int i = 0; i < jogo->mapa.numBorda; i++){
+        
+        if(CheckCollisionRecs(Testadouro->posicao, jogo->mapa.borda[i])){
+
+            PlaySound(jogo->cobra.morte);
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+// NOVA POSFRUTINHA
+void AtualizaPosFrutinha(Jogo* jogo){
+
+    bool posicaoValida = false;
+
+    do{
+
+        posicaoValida = true;
+        // CRIA UMA POSICAO PARA A FRUTINHA
+        if(jogo->nivel == 1){
+            jogo->frutinha.posicao.x = STD_SIZE_X*jogo->frutinha.resize_var + (STD_SIZE_X*jogo->frutinha.resize_var)*(rand()%((int)((LARGURA*jogo->frutinha.resize_var)/(STD_SIZE_X*jogo->frutinha.resize_var))-2));
+            jogo->frutinha.posicao.y = 20*jogo->frutinha.resize_var+(STD_SIZE_Y*jogo->frutinha.resize_var)*(rand()%((int)((ALTURA*jogo->frutinha.resize_var)/(STD_SIZE_Y*jogo->frutinha.resize_var))-2));
+        }else{
+            jogo->frutinha.posicao.x = (STD_SIZE_X*jogo->frutinha.resize_var)*(rand()%((int)((LARGURA*jogo->frutinha.resize_var)/(STD_SIZE_X*jogo->frutinha.resize_var))-1));
+            jogo->frutinha.posicao.y = (STD_SIZE_Y*jogo->frutinha.resize_var)*(rand()%((int)((ALTURA*jogo->frutinha.resize_var)/(STD_SIZE_Y*jogo->frutinha.resize_var))-1));
+        }
+
+        //TESTA COLISAO COM COBRA
+        
+        TipoApontador testadouro = jogo->cobra.Cabeca;
+         
+        while(testadouro != NULL){
+
+            if(CheckCollisionRecs(testadouro->posicao, jogo->frutinha.posicao)){    
+                posicaoValida = false;
+                break;
+            }
+
+            testadouro = testadouro->Prox;
+        }
+
+        //TESTA COLISAO COM OBSTACULOS
+
+        for(int i = 0; i < jogo->mapa.numObstaculos; i++){
+            if(CheckCollisionRecs(jogo->frutinha.posicao, jogo->mapa.obstaculos[i])){
+                posicaoValida = false;
+                break;
+            }
+        }
+
+    } while(posicaoValida == false);
+
+    jogo->frutinha.existe = true;
+
 }
