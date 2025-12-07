@@ -15,10 +15,11 @@ void IniciaJogo(Jogo *jogo){
     jogo->frutinha.resize_var = jogo->resize_var;
     jogo->cobra.resize_var = jogo->resize_var;
 
-    jogo->nivel = 1;
+    jogo->nivel = 3;
     IniciaMapa(&jogo->mapa, jogo->nivel);
     IniciaCobra(&jogo->cobra);
     IniciaFrutinha(&jogo->frutinha);
+    AtualizaPosFrutinha(jogo);
     InicializaMenu(jogo);
     InicializaConfig(jogo);
     InicializaLeaderboard(jogo);
@@ -362,18 +363,21 @@ int MataCobra(Jogo* jogo){
 void AtualizaPosFrutinha(Jogo* jogo){
 
     bool posicaoValida = false;
+    int tamanhoBloco_X = STD_SIZE_X * jogo->resize_var;
+    int tamanhoBloco_Y = STD_SIZE_Y * jogo->resize_var;
+    jogo->frutinha.posicao.width = tamanhoBloco_X;
+    jogo->frutinha.posicao.height = tamanhoBloco_Y;
+    int totalColunas = (LARGURA * jogo->resize_var) / tamanhoBloco_X;
+    int totalLinhas = (ALTURA * jogo->resize_var) / tamanhoBloco_Y;
 
     do{
 
         posicaoValida = true;
+
         // CRIA UMA POSICAO PARA A FRUTINHA
-        if(jogo->nivel == 1){
-            jogo->frutinha.posicao.x = STD_SIZE_X*jogo->frutinha.resize_var + (STD_SIZE_X*jogo->frutinha.resize_var)*(rand()%((int)((LARGURA*jogo->frutinha.resize_var)/(STD_SIZE_X*jogo->frutinha.resize_var))-2));
-            jogo->frutinha.posicao.y = 20*jogo->frutinha.resize_var+(STD_SIZE_Y*jogo->frutinha.resize_var)*(rand()%((int)((ALTURA*jogo->frutinha.resize_var)/(STD_SIZE_Y*jogo->frutinha.resize_var))-2));
-        }else{
-            jogo->frutinha.posicao.x = (STD_SIZE_X*jogo->frutinha.resize_var)*(rand()%((int)((LARGURA*jogo->frutinha.resize_var)/(STD_SIZE_X*jogo->frutinha.resize_var))-1));
-            jogo->frutinha.posicao.y = (STD_SIZE_Y*jogo->frutinha.resize_var)*(rand()%((int)((ALTURA*jogo->frutinha.resize_var)/(STD_SIZE_Y*jogo->frutinha.resize_var))-1));
-        }
+
+        jogo->frutinha.posicao.x = tamanhoBloco_X + (tamanhoBloco_X*(rand() % (totalColunas - 2)));
+        jogo->frutinha.posicao.y = tamanhoBloco_Y + (tamanhoBloco_Y*(rand() % (totalLinhas - 2)));
 
         //TESTA COLISAO COM COBRA
         
@@ -389,6 +393,8 @@ void AtualizaPosFrutinha(Jogo* jogo){
             testadouro = testadouro->Prox;
         }
 
+        if(posicaoValida == false) continue;
+
         //TESTA COLISAO COM OBSTACULOS
 
         for(int i = 0; i < jogo->mapa.numObstaculos; i++){
@@ -397,6 +403,19 @@ void AtualizaPosFrutinha(Jogo* jogo){
                 break;
             }
         }
+
+        if(posicaoValida == false) continue;
+
+        // TESTA COLISAO COM A BORDA
+
+        for(int i = 0; i < jogo->mapa.numBorda; i++){
+            if(CheckCollisionRecs(jogo->frutinha.posicao, jogo->mapa.borda[i])){
+                posicaoValida = false;
+                break;
+            }
+        }
+
+        if(posicaoValida == false) continue;
 
     } while(posicaoValida == false);
 
