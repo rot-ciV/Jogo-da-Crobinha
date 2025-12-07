@@ -36,8 +36,8 @@ void IniciaCobra(ListaCobra* Cobra){
 
     int tamanhoBloco_X = STD_SIZE_X * Cobra->resize_var;
     int tamanhoBloco_Y = STD_SIZE_Y * Cobra->resize_var;
-    int pos_inicial_X = (320 / tamanhoBloco_X) * tamanhoBloco_X;
-    int pos_inicial_Y =  (580 / tamanhoBloco_Y) * tamanhoBloco_Y;
+    int pos_inicial_X = 320 * Cobra->resize_var;
+    int pos_inicial_Y = 580 * Cobra->resize_var;
 
     Cobra->Cabeca->posicao = (Rectangle) {
         pos_inicial_X, 
@@ -155,15 +155,15 @@ na borda e retorna 1 para mata cobra, se for os outros mapas, apenas teleporta a
 void cruzaCobra(ListaCobra* Cobra){
 
     if(Cobra->Cabeca->posicao.y < 0){
-        Cobra->Cabeca->posicao.y = ALTURA;
+        Cobra->Cabeca->posicao.y =  ALTURA*Cobra->resize_var - STD_SIZE_Y*Cobra->resize_var;
     }
     else if(Cobra->Cabeca->posicao.x < 0){
-        Cobra->Cabeca->posicao.x = LARGURA;
+        Cobra->Cabeca->posicao.x = LARGURA*Cobra->resize_var - STD_SIZE_X*Cobra->resize_var;
     }
-    else if(Cobra->Cabeca->posicao.y >= ALTURA){
+    else if(Cobra->Cabeca->posicao.y >= ALTURA*Cobra->resize_var){
         Cobra->Cabeca->posicao.y = 0;
     }
-    else if(Cobra->Cabeca->posicao.x >= LARGURA){
+    else if(Cobra->Cabeca->posicao.x >= LARGURA*Cobra->resize_var){
         Cobra->Cabeca->posicao.x = 0;
     }
 

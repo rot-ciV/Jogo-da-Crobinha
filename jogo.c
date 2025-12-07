@@ -15,7 +15,7 @@ void IniciaJogo(Jogo *jogo){
     jogo->frutinha.resize_var = jogo->resize_var;
     jogo->cobra.resize_var = jogo->resize_var;
 
-    jogo->nivel = 3;
+    jogo->nivel = 1;
     IniciaMapa(&jogo->mapa, jogo->nivel);
     IniciaCobra(&jogo->cobra);
     IniciaFrutinha(&jogo->frutinha);
@@ -45,8 +45,6 @@ int AtualizaRodada(Jogo* jogo){
     
     AtualizaDirecao(&jogo->cobra);
     
-    
-
     if(GetTime() - jogo->tempo >= 0.2){
         
         jogo->tempo = GetTime();
@@ -200,6 +198,7 @@ void DrawConfig(Jogo *jogo){
             DescarregaFundo(&jogo->mapa);
             DescarregaMapa(&jogo->mapa);
             IniciaJogo(jogo);
+           
             
         }
         break;
@@ -212,6 +211,7 @@ void DrawConfig(Jogo *jogo){
             DescarregaFundo(&jogo->mapa);
             DescarregaMapa(&jogo->mapa);
             IniciaJogo(jogo);
+        
         }
         break;
     case 2:

@@ -15,8 +15,6 @@ typedef struct{
     Image im_fundo;
     Texture2D fundo;
     float resize_var;
-
-
 }Mapa;
 
 
