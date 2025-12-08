@@ -266,6 +266,10 @@ void DrawLeaderboard(Jogo *jogo){
         break;
     }
     DrawText("Leaderboard:", (LARGURA*jogo->resize_var)*0.1, (ALTURA*jogo->resize_var)*0.1, 35, WHITE);
+    if(jogo->jogos == 0){
+        DrawText("Nenhuma pontuação registrada ainda.", (LARGURA*jogo->resize_var)*0.1, (ALTURA*jogo->resize_var)*0.2, 20, WHITE);
+    }
+    else {
     OrdenaRanking(jogo);
     jogo->ranking = fopen("ranking.txt", "r");
     char linha[30];
@@ -275,6 +279,7 @@ void DrawLeaderboard(Jogo *jogo){
         y_posicao += 30*jogo->resize_var;
     }
     fclose(jogo->ranking);
+    }
     DrawRectangleRec(jogo->leaderboard.voltar, WHITE);
     DrawText("Voltar", jogo->leaderboard.voltar.x, jogo->leaderboard.voltar.y+(ALTURA*jogo->resize_var)*0.01, 25, BLACK);
 }
@@ -308,8 +313,10 @@ void DefineRanking(Jogo* jogo){
             menor_pontuacao = i;
         }
     }
-    jogo->rankings[menor_pontuacao] = jogo->frutinha.pontuacao;
-    jogo->tempos[menor_pontuacao] = jogo->sessao;
+    if(jogo->frutinha.pontuacao > jogo->rankings[menor_pontuacao]){
+        jogo->rankings[menor_pontuacao] = jogo->frutinha.pontuacao;
+        jogo->tempos[menor_pontuacao] = jogo->sessao;
+}
 }
 }
 
@@ -329,6 +336,9 @@ void AtualizaRanking(Jogo* jogo){
     OrdenaRanking(jogo);
     jogo->ranking = fopen("ranking.txt", "w");
     for(int i = 0; i < jogo->jogos; i++){
+        if(jogo->tempos[i] == 0){
+            break;
+        }
     fprintf(jogo->ranking, "%d - Tempo: %d:%02d | Pontos: %d\n",i+1, (int)jogo->tempos[i]/60, (int)jogo->tempos[i]%60, jogo->rankings[i]);
     }
     fclose(jogo->ranking);
