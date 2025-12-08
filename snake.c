@@ -10,7 +10,7 @@ void FLVCobra(ListaCobra* Cobra){
     Cobra->Rabo = NULL;
     Cobra->Cabeca = NULL;
     Cobra->tamanho = 0;
-    Cobra->morte = LoadSound("assets/morreu.wav");
+    Cobra->morte = LoadSound("assets/BOOM.mp3");
 }
 
 void IniciaCobra(ListaCobra* Cobra){ 
@@ -181,5 +181,6 @@ void LiberaEspacoCobra(ListaCobra* Cobra){
         free(Liberador);
     }
 
+    UnloadSound(Cobra->morte);
     FLVCobra(Cobra);
 }

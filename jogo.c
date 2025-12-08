@@ -512,6 +512,11 @@ void AtualizaPosFrutinha(Jogo* jogo){
 
     } while(posicaoValida == false);
 
+    if(jogo->frutinha.pontuacao > 0){
+
+        PlaySound(jogo->frutinha.come_frutinha);
+    }
+    
     jogo->frutinha.existe = true;
 
 }

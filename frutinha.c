@@ -11,8 +11,8 @@ void IniciaFrutinha(Fruta* frutinha){
     frutinha->posicao.width = (STD_SIZE_X*frutinha->resize_var);
 
     //carregar o som
-    frutinha->come_frutinha = LoadSound("assets/menu_sound_effect_fx.wav");
-    SetSoundVolume(frutinha->come_frutinha, 10.0f);
+    frutinha->come_frutinha = LoadSound("assets/creeperguloso.mp3");
+    SetSoundVolume(frutinha->come_frutinha, 1.0f);
 
     //carrega a imagem
 
