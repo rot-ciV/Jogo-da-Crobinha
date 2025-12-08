@@ -125,7 +125,7 @@ void DesenhaCobra(ListaCobra* Cobra){
     int par = 2;
     while(Pintor != NULL){
         if(par %2 == 1){
-            DrawRectangleRec(Pintor->posicao, GOLD);
+            DrawRectangleRec(Pintor->posicao, BLACK);
         }else{
             DrawRectangleRec(Pintor->posicao, Pintor->cor);
         }par++;

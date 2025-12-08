@@ -15,7 +15,7 @@ void IniciaJogo(Jogo *jogo){
     jogo->frutinha.resize_var = jogo->resize_var;
     jogo->cobra.resize_var = jogo->resize_var;
 
-    jogo->nivel = 2;
+    jogo->nivel = 1;
     IniciaMapa(&jogo->mapa, jogo->nivel);
     IniciaCobra(&jogo->cobra);
     IniciaFrutinha(&jogo->frutinha);
@@ -393,7 +393,7 @@ void TrocaMapa(Jogo* jogo){
     /*se vcs alterarem o valor do if(jogo->cobra.tamanho >= n), mude a terceira linha
     do atualizaposicaofrutinha*/
     if(jogo->nivel != 3){
-        if(jogo->cobra.tamanho >= 10){
+        if(jogo->cobra.tamanho >= 13){
     
             DescarregaMapa(&jogo->mapa);
             DescarregaFrutinha(&jogo->frutinha);
