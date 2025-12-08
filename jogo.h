@@ -57,6 +57,7 @@ typedef struct{
     Game_state game_state;
     float resize_var;
     Music music_game;
+    FILE* ranking;
 }Jogo;
 
 /*
@@ -92,6 +93,7 @@ void UsaTunel(Jogo* jogo);
 void TrocaMapa(Jogo* jogo);
 int MataCobra(Jogo* jogo);
 void AtualizaPosFrutinha(Jogo* jogo);
-
+void DefineRanking(Jogo* jogo);
+void AtualizaRanking(Jogo* jogo);
 
 #endif

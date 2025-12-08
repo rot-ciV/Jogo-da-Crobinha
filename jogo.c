@@ -266,6 +266,13 @@ void DrawLeaderboard(Jogo *jogo){
         break;
     }
     DrawText("Leaderboard:", (LARGURA*jogo->resize_var)*0.1, (ALTURA*jogo->resize_var)*0.1, 35, WHITE);
+    jogo->ranking = fopen("ranking.txt", "r");
+    char linha[30];
+    int y_posicao = (ALTURA*jogo->resize_var)*0.2;
+    while(fgets(linha, sizeof(linha), jogo->ranking) != NULL){
+        DrawText(linha, (LARGURA*jogo->resize_var)*0.1, y_posicao, 20, WHITE);
+        y_posicao += 30*jogo->resize_var;
+    }
     DrawRectangleRec(jogo->leaderboard.voltar, WHITE);
     DrawText("Voltar", jogo->leaderboard.voltar.x, jogo->leaderboard.voltar.y+(ALTURA*jogo->resize_var)*0.01, 25, BLACK);
 }
@@ -284,6 +291,23 @@ void AtualizaLeaderboard(Jogo *jogo){
         }
     }
 }
+
+void DefineRanking(Jogo* jogo){
+    if(jogo->ranking == NULL){
+        jogo->ranking = fopen("ranking.txt", "w");
+    }
+    else{
+        jogo->ranking = fopen("ranking.txt", "a");
+    }
+}
+
+void AtualizaRanking(Jogo* jogo){
+    DefineRanking(jogo);
+    fprintf(jogo->ranking, "Tempo: %d:%02d | Pontos: %d\n", (int)jogo->sessao/60, (int)jogo->sessao%60, jogo->frutinha.pontuacao);
+    fclose(jogo->ranking);
+}
+
+
 
 // TUNEL.............................
 
@@ -335,6 +359,7 @@ int MataCobra(Jogo* jogo){
 
         if(Testadouro->posicao.x == jogo->cobra.Cabeca->posicao.x && Testadouro->posicao.y == jogo->cobra.Cabeca->posicao.y){
             PlaySound(jogo->cobra.morte);
+            AtualizaRanking(jogo);
             return 1;
         }
 
@@ -348,6 +373,7 @@ int MataCobra(Jogo* jogo){
         if(CheckCollisionRecs(Testadouro->posicao, jogo->mapa.obstaculos[i])){
 
             PlaySound(jogo->cobra.morte);
+            AtualizaRanking(jogo);
             return 1;
         }
     }
@@ -357,6 +383,7 @@ int MataCobra(Jogo* jogo){
         if(CheckCollisionRecs(Testadouro->posicao, jogo->mapa.borda[i])){
 
             PlaySound(jogo->cobra.morte);
+            AtualizaRanking(jogo);
             return 1;
         }
     }
@@ -428,3 +455,4 @@ void AtualizaPosFrutinha(Jogo* jogo){
     jogo->frutinha.existe = true;
 
 }
+
