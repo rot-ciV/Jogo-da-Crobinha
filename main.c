@@ -10,7 +10,7 @@ int main(){
     //carrega dispositivos de áudio
     InitAudioDevice();
     
-    Jogo jogo;
+    Jogo jogo = {0};
 
     int gameOver = 0;
     srand(time(NULL));
@@ -50,6 +50,8 @@ int main(){
             FimdeJogotxt(&jogo);
             
             if(IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)){
+                LiberaEspaco(&jogo);
+                UnloadMusicStream(jogo.music_game);
                 IniciaJogo(&jogo);
                 jogo.frutinha.pontuacao = 0;
                 gameOver = 0;

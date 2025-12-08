@@ -17,5 +17,5 @@ typedef struct{
 
 void IniciaFrutinha(Fruta* fruta);
 void DesenhaFrutinha(Fruta* fruta, ListaCobra* Cobra);
-
+void DescarregaFrutinha(Fruta* frutinha);
 #endif

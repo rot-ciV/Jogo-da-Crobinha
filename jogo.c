@@ -15,7 +15,7 @@ void IniciaJogo(Jogo *jogo){
     jogo->frutinha.resize_var = jogo->resize_var;
     jogo->cobra.resize_var = jogo->resize_var;
 
-    jogo->nivel = 1;
+    jogo->nivel = 2;
     IniciaMapa(&jogo->mapa, jogo->nivel);
     IniciaCobra(&jogo->cobra);
     IniciaFrutinha(&jogo->frutinha);
@@ -71,6 +71,8 @@ void tocaMusica(Jogo* jogo){
 }
 void LiberaEspaco(Jogo* jogo){
 
+    DescarregaFundo(&jogo->mapa);
+    DescarregaFrutinha(&jogo->frutinha);
     LiberaEspacoCobra(&jogo->cobra);
     DescarregaText(jogo);
 }
@@ -115,6 +117,7 @@ void InicializaMenu(Jogo* jogo){
     jogo->menu.imagem = LoadImage("assets/cobrinha_menu.png");
     ImageResize(&jogo->menu.imagem, (LARGURA*jogo->resize_var)/2.5, (ALTURA*jogo->resize_var)/2.5);
     jogo->menu.textura = LoadTextureFromImage(jogo->menu.imagem);
+    UnloadImage(jogo->menu.imagem);
     jogo->menu.start = (Rectangle){(LARGURA*jogo->resize_var)*0.6, ((ALTURA*jogo->resize_var)/10)*2, (LARGURA*jogo->resize_var)*0.3, (ALTURA*jogo->resize_var)*0.125};
     jogo->menu.leaderboards = (Rectangle){(LARGURA*jogo->resize_var)*0.6, ((ALTURA*jogo->resize_var)/10)*4, (LARGURA*jogo->resize_var)*0.3, (ALTURA*jogo->resize_var)*0.125};
     jogo->menu.config = (Rectangle){(LARGURA*jogo->resize_var)*0.6, ((ALTURA*jogo->resize_var)/10)*6, (LARGURA*jogo->resize_var)*0.3, (ALTURA*jogo->resize_var)*0.125};
@@ -306,9 +309,10 @@ void TrocaMapa(Jogo* jogo){
     /*se vcs alterarem o valor do if(jogo->cobra.tamanho >= n), mude a terceira linha
     do atualizaposicaofrutinha*/
     if(jogo->nivel != 3){
-        if(jogo->cobra.tamanho >= 20){
+        if(jogo->cobra.tamanho >= 10){
     
             DescarregaMapa(&jogo->mapa);
+            DescarregaFrutinha(&jogo->frutinha);
             LiberaEspacoCobra(&jogo->cobra);
             jogo->nivel += 1;
             
@@ -316,6 +320,7 @@ void TrocaMapa(Jogo* jogo){
             IniciaMapa(&jogo->mapa, jogo->nivel);
             IniciaCobra(&jogo->cobra);
             IniciaFrutinha(&jogo->frutinha);
+            AtualizaPosFrutinha(jogo);
         }
 
     }
@@ -365,8 +370,7 @@ void AtualizaPosFrutinha(Jogo* jogo){
     bool posicaoValida = false;
     int tamanhoBloco_X = STD_SIZE_X * jogo->resize_var;
     int tamanhoBloco_Y = STD_SIZE_Y * jogo->resize_var;
-    jogo->frutinha.posicao.width = tamanhoBloco_X;
-    jogo->frutinha.posicao.height = tamanhoBloco_Y;
+    
     int totalColunas = (LARGURA * jogo->resize_var) / tamanhoBloco_X;
     int totalLinhas = (ALTURA * jogo->resize_var) / tamanhoBloco_Y;
 
@@ -393,8 +397,6 @@ void AtualizaPosFrutinha(Jogo* jogo){
             testadouro = testadouro->Prox;
         }
 
-        if(posicaoValida == false) continue;
-
         //TESTA COLISAO COM OBSTACULOS
 
         for(int i = 0; i < jogo->mapa.numObstaculos; i++){
@@ -403,8 +405,6 @@ void AtualizaPosFrutinha(Jogo* jogo){
                 break;
             }
         }
-
-        if(posicaoValida == false) continue;
 
         // TESTA COLISAO COM A BORDA
 
@@ -415,7 +415,13 @@ void AtualizaPosFrutinha(Jogo* jogo){
             }
         }
 
-        if(posicaoValida == false) continue;
+
+        for(int i = 0; i < jogo->mapa.numTunel; i++){
+            if(CheckCollisionRecs(jogo->frutinha.posicao, jogo->mapa.tunel[i])){
+                posicaoValida = false;
+                break;
+            }
+        }
 
     } while(posicaoValida == false);
 

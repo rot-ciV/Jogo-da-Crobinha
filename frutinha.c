@@ -15,9 +15,11 @@ void IniciaFrutinha(Fruta* frutinha){
     SetSoundVolume(frutinha->come_frutinha, 10.0f);
 
     //carrega a imagem
+
     frutinha->foto = LoadImage("assets/moranguinho.png");
     ImageResize(&frutinha->foto, 20*frutinha->resize_var, 20*frutinha->resize_var);
     frutinha->textura = LoadTextureFromImage(frutinha->foto);
+    UnloadImage(frutinha->foto);
     
 }
 
@@ -30,4 +32,10 @@ void DesenhaFrutinha(Fruta* frutinha, ListaCobra* Cobra){
     }else if(frutinha->existe == true){
         DrawTexture(frutinha->textura, frutinha->posicao.x, frutinha->posicao.y, WHITE);
     }
+}
+
+void DescarregaFrutinha(Fruta* frutinha){
+    
+    UnloadSound(frutinha->come_frutinha);
+    UnloadTexture(frutinha->textura);
 }
