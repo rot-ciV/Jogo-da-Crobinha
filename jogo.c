@@ -23,7 +23,8 @@ void IniciaJogo(Jogo *jogo){
     InicializaMenu(jogo);
     InicializaConfig(jogo);
     InicializaLeaderboard(jogo);
-    jogo->music_game = LoadMusicStream("assets/ingame_music.mp3");
+    jogo->music_game = LoadMusicStream("assets/minecraft.mp3");
+    SetMusicVolume(jogo->music_game, 0.5f);
 
     jogo->game_state = menu_prin;
 
