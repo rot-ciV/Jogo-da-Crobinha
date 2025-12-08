@@ -58,6 +58,9 @@ typedef struct{
     float resize_var;
     Music music_game;
     FILE* ranking;
+    int rankings[20];
+    float tempos[20];
+    int jogos;
 }Jogo;
 
 /*
@@ -95,5 +98,6 @@ int MataCobra(Jogo* jogo);
 void AtualizaPosFrutinha(Jogo* jogo);
 void DefineRanking(Jogo* jogo);
 void AtualizaRanking(Jogo* jogo);
+void OrdenaRanking(Jogo* jogo);
 
 #endif

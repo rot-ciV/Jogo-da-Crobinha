@@ -266,6 +266,7 @@ void DrawLeaderboard(Jogo *jogo){
         break;
     }
     DrawText("Leaderboard:", (LARGURA*jogo->resize_var)*0.1, (ALTURA*jogo->resize_var)*0.1, 35, WHITE);
+    OrdenaRanking(jogo);
     jogo->ranking = fopen("ranking.txt", "r");
     char linha[30];
     int y_posicao = (ALTURA*jogo->resize_var)*0.2;
@@ -273,6 +274,7 @@ void DrawLeaderboard(Jogo *jogo){
         DrawText(linha, (LARGURA*jogo->resize_var)*0.1, y_posicao, 20, WHITE);
         y_posicao += 30*jogo->resize_var;
     }
+    fclose(jogo->ranking);
     DrawRectangleRec(jogo->leaderboard.voltar, WHITE);
     DrawText("Voltar", jogo->leaderboard.voltar.x, jogo->leaderboard.voltar.y+(ALTURA*jogo->resize_var)*0.01, 25, BLACK);
 }
@@ -293,21 +295,69 @@ void AtualizaLeaderboard(Jogo *jogo){
 }
 
 void DefineRanking(Jogo* jogo){
-    if(jogo->ranking == NULL){
-        jogo->ranking = fopen("ranking.txt", "w");
+    if(jogo->jogos < 19){
+        jogo->tempos[jogo->jogos] = jogo->sessao;
+        jogo->rankings[jogo->jogos] = jogo->frutinha.pontuacao;
+        jogo->jogos++;
+        return;
     }
     else{
-        jogo->ranking = fopen("ranking.txt", "a");
+    int menor_pontuacao = 0;
+    for (int i = 1; i < 20; i++){
+        if(jogo->rankings[i] < jogo->rankings[menor_pontuacao]){
+            menor_pontuacao = i;
+        }
     }
+    jogo->rankings[menor_pontuacao] = jogo->frutinha.pontuacao;
+    jogo->tempos[menor_pontuacao] = jogo->sessao;
+}
 }
 
 void AtualizaRanking(Jogo* jogo){
+    jogo->ranking = fopen("ranking.txt", "r");
+    if(jogo->ranking != NULL){
+        int i = 0, t;
+        int tempomin, temposeg;
+        while(fscanf(jogo->ranking, "%d - Tempo: %d:%d | Pontos: %d\n", &t, &tempomin, &temposeg, &jogo->rankings[i]) != EOF){
+            jogo->tempos[i] =(float) tempomin * 60 + temposeg;
+            i++;
+        }
+        jogo->jogos = t+1;
+        fclose(jogo->ranking);
+    }
     DefineRanking(jogo);
-    fprintf(jogo->ranking, "Tempo: %d:%02d | Pontos: %d\n", (int)jogo->sessao/60, (int)jogo->sessao%60, jogo->frutinha.pontuacao);
+    OrdenaRanking(jogo);
+    jogo->ranking = fopen("ranking.txt", "w");
+    for(int i = 0; i < jogo->jogos; i++){
+    fprintf(jogo->ranking, "%d - Tempo: %d:%02d | Pontos: %d\n",i+1, (int)jogo->tempos[i]/60, (int)jogo->tempos[i]%60, jogo->rankings[i]);
+    }
     fclose(jogo->ranking);
 }
 
-
+void OrdenaRanking(Jogo* jogo){
+    for(int i = 0; i < 19; i++){
+        for(int j = i+1; j < 20; j++){
+            if(jogo->rankings[j] > jogo->rankings[i]){
+                int temp_pontos = jogo->rankings[i];
+                jogo->rankings[i] = jogo->rankings[j];
+                jogo->rankings[j] = temp_pontos;
+                int temp_tempos = jogo->tempos[i];
+                jogo->tempos[i] = jogo->tempos[j];
+                jogo->tempos[j] = temp_tempos;
+            }
+            if(jogo->rankings[j] == jogo->rankings[i]){
+                if(jogo->tempos[j] > jogo->tempos[i]){
+                    int temp_pontos = jogo->rankings[i];
+                    jogo->rankings[i] = jogo->rankings[j];
+                    jogo->rankings[j] = temp_pontos;
+                    int temp_tempos = jogo->tempos[i];
+                    jogo->tempos[i] = jogo->tempos[j];
+                    jogo->tempos[j] = temp_tempos;
+                }
+            }
+        }
+    }    
+}
 
 // TUNEL.............................
 

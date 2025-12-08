@@ -12,6 +12,8 @@ int main(){
     
     Jogo jogo = {0};
 
+    jogo.jogos = 0;
+
     int gameOver = 0;
     srand(time(NULL));
 
