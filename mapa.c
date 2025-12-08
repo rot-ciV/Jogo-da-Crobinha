@@ -33,37 +33,46 @@ void IniciaFundo(Mapa* mapa, int nivel){
     Image aux;
 
     if(nivel == 1){
-        aux = LoadImage("assets/fundo.png");
 
-        mapa->fundo = LoadTextureFromImage(aux);
+        Image aux = LoadImage("assets/fundo01.png");
+        ImageResize(&aux, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var);
+        mapa->texFundo = LoadTextureFromImage(aux);
+        SetTextureWrap(mapa->texFundo, TEXTURE_WRAP_REPEAT);
         UnloadImage(aux);
     }
 
     else if(nivel == 2){
-        aux = LoadImage("assets/fundo01.png");
 
-        mapa->fundo = LoadTextureFromImage(aux);
-        UnloadImage(aux);
+        Image aux = LoadImage("assets/fundo02.png");
+        ImageResize(&aux, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var);
+        mapa->texFundo = LoadTextureFromImage(aux);
+        SetTextureWrap(mapa->texFundo, TEXTURE_WRAP_REPEAT);
+        UnloadImage(aux);;
 
     }
 
     else if(nivel == 3){
-        aux = LoadImage("assets/fundo02.png");
-
-        mapa->fundo = LoadTextureFromImage(aux);
-        UnloadImage(aux);
+        Image aux = LoadImage("assets/fundo03.png");
+        ImageResize(&aux, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var);
+        mapa->texFundo = LoadTextureFromImage(aux);
+        SetTextureWrap(mapa->texFundo, TEXTURE_WRAP_REPEAT);
+        UnloadImage(aux);;
 
     }
 }
 
 void DesenhaFundo(Mapa* mapa){
     
-    DrawTextureEx(mapa->fundo, (Vector2){0,0}, 0, mapa->resize_var, WHITE);
+        Rectangle aux = {0, 0, LARGURA*mapa->resize_var, ALTURA*mapa->resize_var};
+        Rectangle moldura = {0, 0, LARGURA*mapa->resize_var, ALTURA*mapa->resize_var};
+        Vector2 orientacao = {0, 0};
+        
+        DrawTexturePro(mapa->texFundo, moldura, aux, orientacao, 0.0f, WHITE);
 }
 
 void DescarregaFundo(Mapa* mapa){
 
-    UnloadTexture(mapa->fundo);
+    UnloadTexture(mapa->texFundo);
 }
 
 void IniciaBorda(Mapa* mapa, int nivel){
@@ -78,7 +87,13 @@ void IniciaBorda(Mapa* mapa, int nivel){
         //Borda de baixo
         mapa->borda[2] = (Rectangle) {0, (ALTURA*mapa->resize_var) - 20*mapa->resize_var, (LARGURA*mapa->resize_var), 20*mapa->resize_var};
         //Borda da esquerda
-        mapa->borda[3] = (Rectangle) {0, 0, 20*mapa->resize_var, (ALTURA*mapa->resize_var)};   
+        mapa->borda[3] = (Rectangle) {0, 0, 20*mapa->resize_var, (ALTURA*mapa->resize_var)};
+        
+        Image aux = LoadImage("assets/borda01.png");
+        ImageResize(&aux, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var);
+        mapa->texBorda = LoadTextureFromImage(aux);
+        SetTextureWrap(mapa->texBorda, TEXTURE_WRAP_REPEAT);
+        UnloadImage(aux);
     }
 
     else if(nivel == 2){
@@ -86,16 +101,8 @@ void IniciaBorda(Mapa* mapa, int nivel){
     }
 
     else if(nivel == 3){
-
         mapa->numBorda = 0;
-        //Borda de cima
-        mapa->borda[0] = (Rectangle) {0, 0, (LARGURA*mapa->resize_var), 20*mapa->resize_var};
-        //Borda da direita
-        mapa->borda[1] = (Rectangle) {(LARGURA*mapa->resize_var) - 20*mapa->resize_var, 0, 20*mapa->resize_var, (ALTURA*mapa->resize_var)};
-        //Borda de baixo
-        mapa->borda[2] = (Rectangle) {0, (ALTURA*mapa->resize_var) - 20*mapa->resize_var, (LARGURA*mapa->resize_var), 20*mapa->resize_var};
-        //Borda da esquerda
-        mapa->borda[3] = (Rectangle) {0, 0, 20*mapa->resize_var, (ALTURA*mapa->resize_var)}; 
+
     }
 }
 
@@ -103,7 +110,11 @@ void DesenhaBordas(Mapa* mapa){
 
     for(int i = 0; i < mapa->numBorda; i++){
 
-        DrawRectangleRec(mapa->borda[i], GRAY);
+        Rectangle aux = mapa->borda[i];
+        Rectangle moldura = {0, 0, aux.width, aux.height};
+        Vector2 orientacao = {0, 0};
+        
+        DrawTexturePro(mapa->texBorda, moldura, aux, orientacao, 0.0f, WHITE);
     }
 }
 
@@ -122,6 +133,11 @@ void IniciaTunel(Mapa* mapa, int nivel){
         mapa->tunel[1] = (Rectangle) {2*STD_SIZE_X*mapa->resize_var, 2*STD_SIZE_Y*mapa->resize_var, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var};
         mapa->tunel[2] = (Rectangle) {30*STD_SIZE_X*mapa->resize_var, 16*STD_SIZE_Y*mapa->resize_var, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var};
         mapa->tunel[3] = (Rectangle) {30*STD_SIZE_X*mapa->resize_var, 30*STD_SIZE_Y*mapa->resize_var, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var};
+        
+        Image aux = LoadImage("assets/tunel02.png");
+        ImageResize(&aux, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var);
+        mapa->texTunel = LoadTextureFromImage(aux);
+        UnloadImage(aux);
     }
 
     else if(nivel == 3){
@@ -132,6 +148,11 @@ void IniciaTunel(Mapa* mapa, int nivel){
         mapa->tunel[1] = (Rectangle) {7*STD_SIZE_X*mapa->resize_var, 19*STD_SIZE_Y*mapa->resize_var, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var};
         mapa->tunel[2] = (Rectangle) {25*STD_SIZE_X*mapa->resize_var, 13*STD_SIZE_Y*mapa->resize_var, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var};
         mapa->tunel[3] = (Rectangle) {13*STD_SIZE_X*mapa->resize_var, 7*STD_SIZE_Y*mapa->resize_var, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var};
+
+        Image aux = LoadImage("assets/tunel03.png");
+        ImageResize(&aux, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var);
+        mapa->texTunel = LoadTextureFromImage(aux);
+        UnloadImage(aux);
     }
 }
 
@@ -139,7 +160,7 @@ void DesenhaTunel(Mapa* mapa){
 
     for(int i = 0; i<mapa->numTunel; i++){
 
-        DrawRectangleRec(mapa->tunel[i], RED);
+        DrawTexture(mapa->texTunel, mapa->tunel[i].x, mapa->tunel[i].y, WHITE);
     }
 }
 
@@ -158,6 +179,12 @@ void IniciaObstaculos(Mapa* mapa, int nivel){
         mapa->obstaculos[1] = (Rectangle) {0*STD_SIZE_X*mapa->resize_var, 20*STD_SIZE_Y*mapa->resize_var, LARGURA*mapa->resize_var, 3*STD_SIZE_Y*mapa->resize_var};
         mapa->obstaculos[2] = (Rectangle) {0*STD_SIZE_X*mapa->resize_var, 21*STD_SIZE_Y*mapa->resize_var, 3*STD_SIZE_X*mapa->resize_var,  12*STD_SIZE_Y*mapa->resize_var};
         mapa->obstaculos[3] = (Rectangle) {30*STD_SIZE_X*mapa->resize_var, 0*STD_SIZE_Y*mapa->resize_var, 3*STD_SIZE_X*mapa->resize_var,  12*STD_SIZE_Y*mapa->resize_var};
+
+        Image aux = LoadImage("assets/obstaculo02.png");
+        ImageResize(&aux, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var);
+        mapa->texObstaculo = LoadTextureFromImage(aux);
+        SetTextureWrap(mapa->texObstaculo, TEXTURE_WRAP_REPEAT);
+        UnloadImage(aux);
     }
 
     else if(nivel == 3){
@@ -174,6 +201,12 @@ void IniciaObstaculos(Mapa* mapa, int nivel){
         mapa->obstaculos[7] = (Rectangle) {10*STD_SIZE_X*mapa->resize_var, 0*STD_SIZE_Y*mapa->resize_var, 2*STD_SIZE_X*mapa->resize_var, 11*STD_SIZE_Y*mapa->resize_var};
         mapa->obstaculos[8] = (Rectangle) {21*STD_SIZE_X*mapa->resize_var, 0*STD_SIZE_Y*mapa->resize_var, 2*STD_SIZE_X*mapa->resize_var, 11*STD_SIZE_Y*mapa->resize_var};
         mapa->obstaculos[9] = (Rectangle) {12*STD_SIZE_X*mapa->resize_var, 9*STD_SIZE_Y*mapa->resize_var, 9*STD_SIZE_X*mapa->resize_var, 2*STD_SIZE_Y*mapa->resize_var};
+
+        Image aux = LoadImage("assets/obstaculo03.png");
+        ImageResize(&aux, STD_SIZE_X*mapa->resize_var, STD_SIZE_Y*mapa->resize_var);
+        mapa->texObstaculo = LoadTextureFromImage(aux);
+        SetTextureWrap(mapa->texObstaculo, TEXTURE_WRAP_REPEAT);
+        UnloadImage(aux);
     }
         
 }
@@ -182,7 +215,11 @@ void DesenhaObstaculos(Mapa* mapa){
 
     for(int i = 0; i < mapa->numObstaculos; i++){
 
-        DrawRectangleRec(mapa->obstaculos[i], BLUE);
+        Rectangle aux = mapa->obstaculos[i];
+        Rectangle moldura = {0, 0, aux.width, aux.height};
+        Vector2 orientacao = {0, 0};
+        
+        DrawTexturePro(mapa->texObstaculo, moldura, aux, orientacao, 0.0f, WHITE);
     }
 }
 

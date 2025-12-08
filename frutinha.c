@@ -16,7 +16,7 @@ void IniciaFrutinha(Fruta* frutinha){
 
     //carrega a imagem
 
-    frutinha->foto = LoadImage("assets/moranguinho.png");
+    frutinha->foto = LoadImage("assets/frutinha01.png");
     ImageResize(&frutinha->foto, 20*frutinha->resize_var, 20*frutinha->resize_var);
     frutinha->textura = LoadTextureFromImage(frutinha->foto);
     UnloadImage(frutinha->foto);
